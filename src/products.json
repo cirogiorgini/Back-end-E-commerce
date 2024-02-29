@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "title": "Nuevo Teléfono",
+    "description": "Teléfono con características mejoradas",
+    "price": 799.99,
+    "thumbnail": "new_phone.jpg",
+    "code": "PHN002",
+    "stock": 15
+  },
+  {
+    "id": 2,
+    "title": "Laptop",
+    "description": "Laptop de alto rendimiento para profesionales",
+    "price": 1499.99,
+    "thumbnail": "laptop.jpg",
+    "code": "LPT002",
+    "stock": 5
+  },
+  {
+    "id": 3,
+    "title": "mouse",
+    "description": "mouse de alto rendimiento para profesionales",
+    "price": 200.99,
+    "thumbnail": "mouse.jpg",
+    "code": "MOS302",
+    "stock": 7
+  }
+]
