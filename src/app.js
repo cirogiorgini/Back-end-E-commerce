@@ -15,7 +15,9 @@ app.get(`/products/:pid`, (req, res) => {
 app.get('/products', (req, res) => {
      const limit = req.query.limit; 
      let products = data;
+     
 
+     ///Ejemplo: /products?limit=2
      if (limit) {
          const limitValue = parseInt(limit);
          if (!isNaN(limitValue) && limitValue >= 0) {
