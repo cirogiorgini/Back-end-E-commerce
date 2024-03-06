@@ -109,6 +109,8 @@ class ProductManager {
     }
 }
 
+module.exports = ProductManager;
+
 // Ejemplo de uso:
 const manager = new ProductManager();
 
@@ -133,3 +135,4 @@ manager.updateProduct(1, updatedProduct);
 
 // Imprimir productos actualizados
 manager.printProducts();
+
