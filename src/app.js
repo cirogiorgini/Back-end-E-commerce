@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const ProductManager = require('./productManager');
+const ProductManager = require('./ProductManager');
 
 app.use(express.json())
 app.use(bodyParser.json());
@@ -63,4 +63,44 @@ app.post('/api/products', (req, res) => {
     res.status(201).json(product);
 });
 
-app.listen(8080);
+// Ruta para actualizar un producto por su ID
+app.put('/api/products/:pid', (req, res) => {
+    const pid = parseInt(req.params.pid); // Obtener el ID del parámetro de la URL
+    const updatedProductData = req.body; // Obtener los datos del cuerpo de la solicitud
+
+    // Verificar que el producto exista
+    const productToUpdate = productManager.getProductById(pid);
+    if (!productToUpdate) {
+        return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    // Actualizar los campos del producto
+    productManager.updateProduct(pid, updatedProductData);
+
+    // Obtener el producto actualizado
+    const updatedProduct = productManager.getProductById(pid);
+
+    // Enviar una respuesta con el producto actualizado
+    res.json(updatedProduct);
+});
+
+// Ruta para eliminar un producto por su ID
+app.delete('/api/products/:pid', (req, res) => {
+    const pid = parseInt(req.params.pid); // Obtener el ID del parámetro de la URL
+
+    // Verificar que el producto exista
+    const productToDelete = productManager.getProductById(pid);
+    if (!productToDelete) {
+        return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    // Eliminar el producto
+    productManager.removeProduct(pid);
+
+    // Enviar una respuesta indicando que el producto fue eliminado
+    res.json({ message: `Producto con ID ${pid} eliminado` });
+});
+
+
+
+app.listen(8081);
