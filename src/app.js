@@ -1,7 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
+const ProductManager = require('./productManager');
 
+app.use(express.json())
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
+
+const productManager = new ProductManager(); // Agrega esta línea para instanciar ProductManager
 
 const data = require('./products.json');
 
@@ -9,7 +15,6 @@ const data = require('./products.json');
 app.get('/api/products/', (req, res) => {
     const limit = req.query.limit; 
     let products = data;
-    
     
     ///Ejemplo: /?limit=2
     if (limit) {
@@ -30,5 +35,32 @@ app.get(`/api/products/:pid`, (req, res) => {
     res.json(prod);
 });
 
+app.post('/api/products', (req, res) => {
+    // Obtener los datos del cuerpo de la solicitud
+    const { title, description, code, price, stock, category, thumbnails } = req.body;
+
+    // Verificar que todos los campos obligatorios estén presentes
+    if (!title || !description || !code || !price || !stock || !category) {
+        return res.status(400).json({ message: "Todos los campos son obligatorios excepto thumbnails" });
+    }
+
+    // Crear un nuevo producto con los datos proporcionados
+    const product = {
+        title,
+        description,
+        code,
+        price,
+        status: true, // Valor predeterminado para el estado
+        stock,
+        category,
+        thumbnails: thumbnails || [] // Si no se proporciona thumbnails, se establece como un array vacío
+    };
+
+    // Agregar el nuevo producto usando la instancia de productManager
+    productManager.addProduct(product);
+
+    // Enviar una respuesta con el producto agregado y el código de estado 201 (Created)
+    res.status(201).json(product);
+});
 
 app.listen(8080);

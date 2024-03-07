@@ -25,13 +25,8 @@ class ProductManager {
         return this.nextId++;
     }
 
-    addProduct(title, description, price, thumbnail, code, stock) {
-        // Validar que todos los campos sean obligatorios
-        if (!title || !description || !price || !thumbnail || !code || !stock) {
-            console.log("Todos los campos son obligatorios.");
-            return;
-        }
-
+    addProduct(title, description, price, thumbnail, code, stock, status) {
+    
         // Validar que no se repita el campo "code"
         const codeExists = this.products.some(product => product.code === code);
         if (codeExists) {
@@ -39,12 +34,15 @@ class ProductManager {
             return;
         }
 
-        const id = this.generateId();
+        // Generar un ID para el nuevo producto
+        const id = this.generateId(); // Mover la generación de ID aquí
+    
         const product = new Product(id, title, description, price, thumbnail, code, stock);
         this.products.push(product);
         console.log(`Producto agregado con ID: ${id}`);
         this.saveToFile();
     }
+    
 
     removeProduct(id) {
         const index = this.products.findIndex(product => product.id === id);
@@ -121,6 +119,8 @@ manager.addProduct("mouse", "mouse de alto rendimiento para profesionales", 200.
 
 // Imprimir productos
 manager.printProducts();
+
+manager.removeProduct(5)
 
 // Actualizar un producto
 const updatedProduct = {
