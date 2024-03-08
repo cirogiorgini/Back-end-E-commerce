@@ -17,7 +17,7 @@ class ProductManager {
     constructor() {
         this.products = [];
         this.nextId = 1;
-        this.filename = path.resolve(__dirname, 'products.json');
+        this.filename = path.resolve(__dirname, './products.json');
         this.loadFromFile();
     }
 
@@ -26,7 +26,6 @@ class ProductManager {
     }
 
     addProduct(title, description, price, thumbnail, code, stock, status) {
-    
         // Validar que no se repita el campo "code"
         const codeExists = this.products.some(product => product.code === code);
         if (codeExists) {
@@ -35,14 +34,13 @@ class ProductManager {
         }
 
         // Generar un ID para el nuevo producto
-        const id = this.generateId(); // Mover la generación de ID aquí
+        const id = this.generateId();
     
         const product = new Product(id, title, description, price, thumbnail, code, stock);
         this.products.push(product);
         console.log(`Producto agregado con ID: ${id}`);
         this.saveToFile();
     }
-    
 
     removeProduct(id) {
         const index = this.products.findIndex(product => product.id === id);
@@ -77,8 +75,12 @@ class ProductManager {
     }
 
     saveToFile() {
-        fs.writeFileSync(this.filename, JSON.stringify(this.products, null, 2));
-        console.log("Datos guardados en el archivo:", this.filename);
+        try {
+            fs.writeFileSync(this.filename, JSON.stringify(this.products, null, 2));
+            console.log("Datos guardados en el archivo:", this.filename);
+        } catch (error) {
+            console.log("Error al guardar los datos en el archivo:", error.message);
+        }
     }
 
     loadFromFile() {
@@ -88,7 +90,12 @@ class ProductManager {
             this.nextId = Math.max(...this.products.map(product => product.id)) + 1;
             console.log("Datos cargados desde el archivo:", this.filename);
         } catch (error) {
-            console.log("No se pudo cargar el archivo:", this.filename);
+            if (error.code === 'ENOENT') {
+                console.log("El archivo no existe. Creando uno nuevo.");
+                this.saveToFile(); // Crear un archivo vacío si no existe
+            } else {
+                console.log("Error al cargar el archivo:", error.message);
+            }
         }
     }
 
@@ -120,7 +127,7 @@ manager.addProduct("mouse", "mouse de alto rendimiento para profesionales", 200.
 // Imprimir productos
 manager.printProducts();
 
-manager.removeProduct(5)
+manager.removeProduct(5);
 
 // Actualizar un producto
 const updatedProduct = {
@@ -135,4 +142,3 @@ manager.updateProduct(1, updatedProduct);
 
 // Imprimir productos actualizados
 manager.printProducts();
-

@@ -1,14 +1,5 @@
 [
   {
-    "id": 1,
-    "title": "Nuevo Teléfono",
-    "description": "Teléfono con características mejoradas",
-    "price": 799.99,
-    "thumbnail": "new_phone.jpg",
-    "code": "PHN002",
-    "stock": 15
-  },
-  {
     "id": 2,
     "title": "Laptop",
     "description": "Laptop de alto rendimiento para profesionales",
@@ -25,5 +16,14 @@
     "thumbnail": "mouse.jpg",
     "code": "MOS302",
     "stock": 7
+  },
+  {
+    "id": 4,
+    "title": "Phone",
+    "description": "Smartphone con excelentes características",
+    "price": 699.99,
+    "thumbnail": "phone.jpg",
+    "code": "PHN001",
+    "stock": 10
   }
 ]

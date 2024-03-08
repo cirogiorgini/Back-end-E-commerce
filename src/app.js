@@ -2,14 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const ProductManager = require('./ProductManager');
+const CartManager = require('./CartManager')
+
+const productManager = new ProductManager(); 
+const cartManager = new CartManager();
 
 app.use(express.json())
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
-const productManager = new ProductManager(); // Agrega esta línea para instanciar ProductManager
 
 const data = require('./products.json');
+
 
 // Ruta para obtener todos los productos
 app.get('/api/products/', (req, res) => {
@@ -101,6 +105,41 @@ app.delete('/api/products/:pid', (req, res) => {
     res.json({ message: `Producto con ID ${pid} eliminado` });
 });
 
+// Ruta para crear un nuevo carrito
+app.post('/api/carts/', (req, res) => {
+    const newCart = cartManager.createCart();
+    res.status(201).json(newCart);
+});
+
+// Ruta para listar los productos del carrito
+app.get('/api/carts/:cid', (req, res) => {
+    const cid = req.params.cid;
+    const cart = cartManager.getCartById(cid);
+    if (!cart) {
+        return res.status(404).json({ message: "Carrito no encontrado" });
+    }
+    res.json(cart.products);
+});
+
+// Ruta para agregar un producto al carrito
+app.post('/api/carts/:cid/product/:pid', (req, res) => {
+    const cartId = req.params.cid;
+    const productId = parseInt(req.params.pid);
+
+    // Verificar si el producto existe en el archivo products.json
+    const product = data.find(product => product.id === productId);
+    if (!product) {
+        return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    // Intentar agregar el producto al carrito
+    const addedToCart = cartManager.addProductToCart(cartId, productId);
+    if (!addedToCart) {
+        return res.status(404).json({ message: "Carrito no encontrado" });
+    }
+
+    res.json({ message: `Producto con ID ${productId} agregado al carrito ${cartId}` });
+});
 
 
-app.listen(8081);
+app.listen(8080);
