@@ -1,4 +1,5 @@
 const express = require('express');
+const handlebars = require('express-handlebars')
 const bodyParser = require('body-parser');
 const app = express();
 const ProductManager = require('./ProductManager');
@@ -7,8 +8,15 @@ const CartManager = require('./CartManager')
 const productManager = new ProductManager(); 
 const cartManager = new CartManager();
 
+
+//config handlebars
+app.engine('handlebars', handlebars.engine())
+app.set(`views`, `${__dirname}/views`)
+app.set(`view engine`, `handlebars`)
+
 app.use(express.json())
-app.use(bodyParser.json());
+app.use(bodyParser.json());+
+app.use(express.static(`${__dirname}/../public`))
 app.use(express.urlencoded({ extended: true }));
 
 
@@ -140,6 +148,16 @@ app.post('/api/carts/:cid/product/:pid', (req, res) => {
 
     res.json({ message: `Producto con ID ${productId} agregado al carrito ${cartId}` });
 });
+
+app.get(`/home`, (_, res) => {
+    
+    const product = {
+        products: data,
+        styles:['index.css']
+    }
+
+    res.render('home', product)
+})
 
 
 app.listen(8080);

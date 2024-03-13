@@ -120,9 +120,9 @@ module.exports = ProductManager;
 const manager = new ProductManager();
 
 // Agregar productos
-manager.addProduct("Phone", "Smartphone con excelentes características", 699.99, "phone.jpg", "PHN001", 10);
-manager.addProduct("Laptop", "Laptop de alto rendimiento para profesionales", 1499.99, "laptop.jpg", "LPT002", 5);
-manager.addProduct("mouse", "mouse de alto rendimiento para profesionales", 200.99, "mouse.jpg", "MOS302", 7);
+manager.addProduct("Phone", "Smartphone con excelentes características", 699.99, "https://www.bing.com/images/search?view=detailV2&ccid=6SodXgYw&id=A68DD3384855073E42A38744B824A35610EB257C&thid=OIP.6SodXgYwWAhJ475st-KAdgHaHa&mediaurl=https%3a%2f%2fwww.refurbished.nl%2fcache%2fimages%2fiphone-12-voorkant-dichtbij-zwart_600x600_adaptiveResize_16777215.png&cdnurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.e92a1d5e0630580849e3be6cb7e28076%3frik%3dfCXrEFajJLhEhw%26pid%3dImgRaw%26r%3d0&exph=600&expw=600&q=iphone&simid=608033942335215771&FORM=IRPRST&ck=63BABA9331952C7F81A9772522F3C4F8&selectedIndex=14&itb=1&qft=+filterui%3aphoto-transparent&ajaxhist=0&ajaxserp=0", "PHN001", 10);
+manager.addProduct("Laptop", "Laptop de alto rendimiento para profesionales", 1499.99, "https://th.bing.com/th/id/R.677bc3daa911c5083220097d5e7bedd4?rik=hxdL%2fV5LoxXYNg&riu=http%3a%2f%2fjetarinc.weebly.com%2fuploads%2f3%2f9%2f2%2f3%2f39238287%2fs243516740636381673_p1_i1_w600.png&ehk=U%2bGGnffMDKGbJmLQePdtc1yrs6wyny3k%2figgZJCpbM4%3d&risl=&pid=ImgRaw&r=0", "LPT002", 5);
+manager.addProduct("mouse", "mouse de alto rendimiento para profesionales", 200.99, "https://macmagazine.com.br/wp-content/uploads/2018/01/07-mx01.png", "MOS302", 7);
 
 // Imprimir productos
 manager.printProducts();

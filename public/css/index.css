@@ -1,0 +1,23 @@
+body{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem  ;
+}
+
+.card{
+    display: flex; 
+    gap: 1 rem;
+    width: 500px;
+    height: 150px;
+    background-color: rgb(232, 230, 230);
+    border-radius: 0.8rem;
+}
+
+.card-image{
+   display: grid;
+   align-items: center;
+   justify-content: center;
+   padding: 1.5rem;
+   width: 100px;
+    
+}
