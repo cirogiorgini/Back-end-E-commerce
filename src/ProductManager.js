@@ -36,7 +36,7 @@ class ProductManager {
         // Generar un ID para el nuevo producto
         const id = this.generateId();
     
-        const product = new Product(id, title, description, price, thumbnail, code, stock);
+        const product = new Product(id, title, description, price, thumbnail, code, stock, status);
         this.products.push(product);
         console.log(`Producto agregado con ID: ${id}`);
         this.saveToFile();
@@ -99,6 +99,17 @@ class ProductManager {
         }
     }
 
+    async getProducts() {
+        try {
+            const fileContents = await fs.readFileSync(this.filename, 'utf-8');
+            const existingProducts = JSON.parse(fileContents);
+            return existingProducts;
+        } catch (err) {
+            console.error("Error al obtener los productos:", err);
+            return [];
+        }
+    }
+
     printProducts() {
         console.log("Lista de Productos:");
         this.products.forEach(product => {
@@ -124,21 +135,12 @@ manager.addProduct("Phone", "Smartphone con excelentes características", 699.99
 manager.addProduct("Laptop", "Laptop de alto rendimiento para profesionales", 1499.99, "https://th.bing.com/th/id/R.677bc3daa911c5083220097d5e7bedd4?rik=hxdL%2fV5LoxXYNg&riu=http%3a%2f%2fjetarinc.weebly.com%2fuploads%2f3%2f9%2f2%2f3%2f39238287%2fs243516740636381673_p1_i1_w600.png&ehk=U%2bGGnffMDKGbJmLQePdtc1yrs6wyny3k%2figgZJCpbM4%3d&risl=&pid=ImgRaw&r=0", "LPT002", 5);
 manager.addProduct("mouse", "mouse de alto rendimiento para profesionales", 200.99, "https://macmagazine.com.br/wp-content/uploads/2018/01/07-mx01.png", "MOS302", 7);
 
-// Imprimir productos
-manager.printProducts();
 
-manager.removeProduct(5);
+manager.getProducts()
+    .then(products => {
+        console.log(products); // Verifica si los productos se imprimen correctamente
+    })
+    .catch(error => {
+        console.error("Error al obtener productos:", error);
+    });
 
-// Actualizar un producto
-const updatedProduct = {
-    title: "Nuevo Teléfono",
-    description: "Teléfono con características mejoradas",
-    price: 799.99,
-    thumbnail: "new_phone.jpg",
-    code: "PHN002",
-    stock: 15
-};
-manager.updateProduct(1, updatedProduct);
-
-// Imprimir productos actualizados
-manager.printProducts();

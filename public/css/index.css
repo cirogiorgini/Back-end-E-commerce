@@ -21,3 +21,10 @@ body{
    width: 100px;
     
 }
+
+.form-container{
+    width: 100%;
+}
+.input{
+    padding-bottom: 5px;
+}

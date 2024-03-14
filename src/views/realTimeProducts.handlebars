@@ -1,0 +1,54 @@
+<div class="form-container">
+    <section class="form">
+        <form action="/realTimeProducts" id="productForm" method="post">
+            <h2>Agregar Producto</h2>
+
+            <div class="input">
+                <label>Title: </label>
+                <input type="text" id="productTitle" name="title" >
+            </div>
+            <div class="input">
+                <label>Description: </label>
+                <input type="text" id="productDescription" name="description">
+            </div>
+            <div class="input">
+                <label>Price: </label>
+                <input type="number" id="productPrice" name="price">
+            </div>
+            <div class="input">
+                <label>Thumbnail: </label>
+                <input type="text" id="productThumbnail" name="thumbnail">
+            </div>
+            <div class="input">
+                <label>Code: </label>
+                <input type="text" id="productCode" name="code">
+            </div>
+            <div>
+                <label>Estado: </label>
+                <label>Verdadero</label>
+                <input type="radio" name="status" id="productStatusTrue" value="true">
+                <label>Falso</label>
+                <input type="radio" name="status" id="productStatusFalse" value="false">
+            </div>
+            <div class="input">
+                <label>Stock: </label>
+                <input type="number" id="productStock" name="stock">
+            </div>
+            <input type="submit" id="addProduct" value="Agregar">
+        </form>
+    </section>
+</div>
+
+
+{{#each products}}
+    <article class="card-container">
+    <div class="card">
+            <section class="card-image"><img width="100px" src="{{thumbnail}}" alt="{{thumbnail}}"></section>
+            <section class="card-info">
+                <h3 class="card-info-title">{{this.title}}</h3>
+                <p class="card-info-description">{{this.description}}</p>
+                <p class="card-info-price">${{this.price}}</p>
+            </section>
+    </div>
+    </article>
+{{/each}}

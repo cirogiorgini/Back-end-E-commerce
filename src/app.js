@@ -1,34 +1,44 @@
 const express = require('express');
-const handlebars = require('express-handlebars')
+const handlebars = require('express-handlebars');
+const { createServer } = require('http'); // Cambio en la importación
+const { Server } = require('socket.io');
+const viewsRouter = require('./routes/home.router');
+const realTimeProducts = require('./routes/realTimeProducts');
 const bodyParser = require('body-parser');
-const app = express();
+
 const ProductManager = require('./ProductManager');
-const CartManager = require('./CartManager')
+const CartManager = require('./CartManager');
 
 const productManager = new ProductManager(); 
 const cartManager = new CartManager();
 
+const app = express();
+
+// Crear el servidor HTTP
+const httpServer = createServer(app); // Cambio en la inicialización del servidor
+const io = new Server(httpServer); // Crear instancia de socket.io y pasarle el servidor HTTP
 
 //config handlebars
-app.engine('handlebars', handlebars.engine())
-app.set(`views`, `${__dirname}/views`)
-app.set(`view engine`, `handlebars`)
+app.engine('handlebars', handlebars.engine());
+app.set('views', `${__dirname}/views`);
+app.set('view engine', 'handlebars');
 
-app.use(express.json())
-app.use(bodyParser.json());+
-app.use(express.static(`${__dirname}/../public`))
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(express.static(`${__dirname}/../public`));
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/', viewsRouter);
+app.use('/', realTimeProducts);
 
 const data = require('./products.json');
-
 
 // Ruta para obtener todos los productos
 app.get('/api/products/', (req, res) => {
     const limit = req.query.limit; 
     let products = data;
     
-    ///Ejemplo: /?limit=2
+    // Ejemplo: /?limit=2
     if (limit) {
         const limitValue = parseInt(limit);
         if (!isNaN(limitValue) && limitValue >= 0) {
@@ -41,7 +51,7 @@ app.get('/api/products/', (req, res) => {
     res.json(products);
 });
 
-app.get(`/api/products/:pid`, (req, res) => {   
+app.get('/api/products/:pid', (req, res) => {   
     const pid = +req.params.pid;
     const prod = data.find(p => p.id === pid);
     res.json(prod);
@@ -49,10 +59,10 @@ app.get(`/api/products/:pid`, (req, res) => {
 
 app.post('/api/products', (req, res) => {
     // Obtener los datos del cuerpo de la solicitud
-    const { title, description, code, price, stock, category, thumbnails } = req.body;
+    const { title, description, code, price, stock, thumbnails } = req.body;
 
     // Verificar que todos los campos obligatorios estén presentes
-    if (!title || !description || !code || !price || !stock || !category) {
+    if (!title || !description || !code || !price || !stock) {
         return res.status(400).json({ message: "Todos los campos son obligatorios excepto thumbnails" });
     }
 
@@ -64,12 +74,14 @@ app.post('/api/products', (req, res) => {
         price,
         status: true, // Valor predeterminado para el estado
         stock,
-        category,
         thumbnails: thumbnails || [] // Si no se proporciona thumbnails, se establece como un array vacío
     };
 
     // Agregar el nuevo producto usando la instancia de productManager
     productManager.addProduct(product);
+
+    // Emitir el evento newProduct a todos los clientes conectados
+    io.emit('newProduct', product);
 
     // Enviar una respuesta con el producto agregado y el código de estado 201 (Created)
     res.status(201).json(product);
@@ -92,6 +104,9 @@ app.put('/api/products/:pid', (req, res) => {
     // Obtener el producto actualizado
     const updatedProduct = productManager.getProductById(pid);
 
+    // Emitir el evento updateProduct a todos los clientes conectados
+    io.emit('updateProduct', updatedProduct);
+
     // Enviar una respuesta con el producto actualizado
     res.json(updatedProduct);
 });
@@ -108,6 +123,9 @@ app.delete('/api/products/:pid', (req, res) => {
 
     // Eliminar el producto
     productManager.removeProduct(pid);
+
+    // Emitir el evento updateFeed a todos los clientes conectados
+    io.emit('updateFeed', productManager.getAllProducts());
 
     // Enviar una respuesta indicando que el producto fue eliminado
     res.json({ message: `Producto con ID ${pid} eliminado` });
@@ -149,15 +167,18 @@ app.post('/api/carts/:cid/product/:pid', (req, res) => {
     res.json({ message: `Producto con ID ${productId} agregado al carrito ${cartId}` });
 });
 
-app.get(`/home`, (_, res) => {
-    
-    const product = {
-        products: data,
-        styles:['index.css']
-    }
+// Configurar WebSockets
+io.on('connection', (socket) => {
+    console.log(`Nuevo cliente conectado via WebSocket con id ${socket.id}`);
+});
 
-    res.render('home', product)
-})
+// Asignar el objeto io al app para que esté disponible en otros archivos
+app.set('io', io);
+
+const PORT = 8080;
+httpServer.listen(PORT, () => {
+    console.log(`Servidor en ejecución en el puerto ${PORT}`);
+});
 
 
-app.listen(8080);
+module.exports = app;
