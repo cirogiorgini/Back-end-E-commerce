@@ -118,15 +118,6 @@
     "code": " WS"
   },
   {
-    "id": 15,
-    "title": "procesador",
-    "description": "intel i9",
-    "price": "999",
-    "thumbnail": "i9.jpg",
-    "code": "8956587",
-    "stock": "true"
-  },
-  {
     "id": 16,
     "title": "procesador",
     "description": "intel i8",
