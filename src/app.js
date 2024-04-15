@@ -12,8 +12,8 @@ const bodyParser = require('body-parser');
 const app = express();
 
 // Crear el servidor HTTP
-const httpServer = createServer(app); // Cambio en la inicialización del servidor
-const io = new Server(httpServer); // Crear instancia de socket.io y pasarle el servidor HTTP
+const httpServer = createServer(app); 
+const io = new Server(httpServer); 
 
 //config handlebars
 app.engine('handlebars', handlebars.engine());
@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', viewsRouter);
 app.use('/', realTimeProducts);
 app.use('/', productsRouter);
-app.use('/', cartRouter)
+app.use('/', cartRouter);
 
 // Configurar WebSockets
 io.on('connection', (socket) => {
