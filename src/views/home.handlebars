@@ -7,7 +7,18 @@
                     <h3 class="card-info-title">{{title}}</h3>
                     <p class="card-info-description">{{description}}</p>
                     <p class="card-info-price">${{price}}</p>
+                    <button>Agregar al carrito</button>
                 </section>
         </div>
     </article>
 {{/each}}
+
+
+Current page: {{products.page}}
+{{#if products.hasPrevPage}}
+    <a href="/home?page={{data.prevPage}}">Prev</a>
+{{/if}}
+
+{{#if products.hasNextPage}}
+    <a href="/home?page={{data.nextPage}}">Next</a>
+{{/if}}
