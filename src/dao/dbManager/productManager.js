@@ -24,19 +24,23 @@ class ProductManager {
                 sort: {}
             };
     
-            
+            // Filtrar por categoría si se proporciona una consulta
             if (query) {
                 filter = { category: query }; 
             }
     
-            
+            // Ordenar por precio si se proporciona el parámetro de ordenamiento
             if (sort === 'asc' || sort === 'desc') {
                 options.sort.price = sort === 'asc' ? 1 : -1; 
             }
     
-            const products = await Products.paginate(filter, options);
-            
-            return products;
+            // Buscar productos en la base de datos
+            const result = await Products.paginate(filter, options);
+    
+            // Convertir los documentos a objetos planos
+            const products = result.docs.map(doc => doc.toObject());
+    
+            return { ...result, docs: products };
         } catch (error) {
             console.error('Error al obtener los productos:', error);
             throw new Error('Error al obtener los productos');
