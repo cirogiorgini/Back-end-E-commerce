@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const server = Router();
-const data = require('../products.json');
-const ProductManager = require('../ProductManager');
+const data = require('../assets/products.json');
+const ProductManager = require('../dao/fileManager/ProductManager');
 const bodyParser = require('body-parser');
 const productManager = new ProductManager();
 

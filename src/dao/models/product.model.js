@@ -41,6 +41,7 @@ const schema = new mongoose.Schema({
         required: true,
         min: 0
     },
+    
     category: {
         type: String,
         required: true
@@ -50,6 +51,7 @@ const schema = new mongoose.Schema({
 schema.virtual('id').get(function () {
     return this._id.toString()
 });
+
 
 schema.plugin(mongoosePaginate);
 

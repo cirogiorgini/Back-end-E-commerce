@@ -4,42 +4,45 @@ class ProductManager {
 
     constructor() { }
 
-    async getProducts(page, limit, sort, category, availability) {
+    async prepare() {
         try {
-            const query = {
-                ...(category && { category: category }),
-                ...(availability && { status: availability === 'true' })
-            };
-            const options = {
+            // Realizar la inicialización específica aquí, por ejemplo, conexión a la base de datos
+            // En este ejemplo, no es necesario realizar ninguna inicialización especial
+            console.log("ProductManager preparado");
+        } catch (error) {
+            console.error("Error al preparar ProductManager:", error);
+            throw new Error("Error al preparar ProductManager");
+        }
+    }
+
+    async getProducts({ limit = 10, page = 1, sort, query } = {}) {
+        try {
+            let filter = {};
+            let options = {
                 limit: parseInt(limit),
                 page: parseInt(page),
-                sort: sort ? { price: sort } : undefined,
-                lean: true
+                sort: {}
             };
-
-            const allProducts = await Products.paginate(query, options);
-
-            const status = allProducts ? 'success' : 'error';
-            const prevLink = allProducts.hasPrevPage ? `/api/products?page=${allProducts.prevPage}` : null;
-            const nextLink = allProducts.hasNextPage ? `/api/products?page=${allProducts.nextPage}` : null;
-
-            const result = {
-                status,
-                payload: allProducts.docs,
-                totalPages: allProducts.totalPages,
-                prevPage: allProducts.prevPage,
-                nextPage: allProducts.nextPage,
-                page: allProducts.page,
-                hasPrevPage: allProducts.hasPrevPage,
-                hasNextPage: allProducts.hasNextPage,
-                prevLink,
-                nextLink
-            };
-            return result;
+    
+            
+            if (query) {
+                filter = { category: query }; 
+            }
+    
+            
+            if (sort === 'asc' || sort === 'desc') {
+                options.sort.price = sort === 'asc' ? 1 : -1; 
+            }
+    
+            const products = await Products.paginate(filter, options);
+            
+            return products;
         } catch (error) {
+            console.error('Error al obtener los productos:', error);
             throw new Error('Error al obtener los productos');
         }
     }
+    
 
     async getProductById(id) {
         try {
@@ -48,28 +51,27 @@ class ProductManager {
             if (product) {
                 return product;
             } else {
-                throw new Error('Not Found: El ID solicitado no existe.');
+                throw new Error('No se ha encontrado ese ID');
             }
         } catch (error) {
-            console.error('Error al obtener el producto por ID:', error);
-            throw new Error('Error al obtener el producto por ID');
+            console.error('no se pudo extraer el producto', error);
+            throw new Error('no se pudo extraer el producto');
         }
     }
 
 
-    // Agregar un nuevo producto
+    
     async addProduct(title, description, price, thumbnail, code, status, stock, category) {
-        // Validaciones y asignaciones de valores predeterminados
 
         const invalidOptions = isNaN(+price) || +price <= 0 || isNaN(+stock) || +stock < 0;
-
+       
         if (!title || !description || !code || !category || invalidOptions) {
             throw new Error('Error al validar los datos');
         };
 
         const finalThumbnail = thumbnail ? thumbnail : 'Sin Imagen';
 
-        // Si no se carga nada en este parámetro se generará como true por defecto
+       
         if (typeof status === 'undefined' || status === true || status === 'true') {
             status = true;
         } else {
@@ -97,26 +99,27 @@ class ProductManager {
 
     async updateProduct(id, fieldsToUpdate) {
         try {
-            // Verificar si se proporcionaron campos para actualizar
-            const areFieldsPresent = Object.keys(fieldsToUpdate).length > 0;
-
-            if (!areFieldsPresent) {
+            // Verifica si hay campos para actualizar
+            if (Object.keys(fieldsToUpdate).length === 0) {
                 throw new Error('No se proporcionaron campos para actualizar');
             }
-
-            // Actualizar el producto
+    
+            // Actualiza el producto en la base de datos
             const updatedProduct = await Products.updateOne({ _id: id }, { $set: fieldsToUpdate });
-
+    
+            // Verifica si se encontró y actualizó el producto
             if (updatedProduct.nModified === 0) {
                 throw new Error('No se encontró el producto para actualizar');
             }
-
+    
             return updatedProduct;
         } catch (error) {
-            console.error('Error al actualizar el producto desde DB:', error);
-            throw new Error('Error al actualizar el producto desde DB');
+            // Maneja los errores de manera adecuada
+            console.error('Error al actualizar el producto en la base de datos:', error.message);
+            throw new Error('Error al actualizar el producto en la base de datos');
         }
     }
+    
 
     async deleteProduct(productId) {
         try {

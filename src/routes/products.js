@@ -1,9 +1,11 @@
 const { Router } = require('express');
 const server = Router();
-const data = require('../products.json');
-const ProductManager = require('../ProductManager');
+const data = require('../assets/products.json');
+const ProductManager = require('../dao/fileManager/ProductManager');
 const bodyParser = require('body-parser');
 const productManager = new ProductManager();
+
+
 
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
@@ -11,21 +13,16 @@ server.use(bodyParser.json());
 
 
 // Ruta para obtener todos los productos
-server.get('/api/products/', (req, res) => {
-    const limit = req.query.limit; 
-    let products = data;
-    
-    // Ejemplo: /?limit=2
-    if (limit) {
-        const limitValue = parseInt(limit);
-        if (!isNaN(limitValue) && limitValue >= 0) {
-            products = products.slice(0, limitValue);
-        } else {
-            return res.status(400).json({ error: 'El parámetro de consulta "limit" debe ser un número positivo.' });
-        }
+server.get('/api/products', async (req, res) => {
+    try {
+        const { limit, page, sort, query } = req.query;
+
+        const products = await productManager.getProducts({ limit, page, sort, query });
+
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-    
-    res.json(products);
 });
 
 server.get('/api/products/:pid', (req, res) => {   

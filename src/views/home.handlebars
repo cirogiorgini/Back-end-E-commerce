@@ -1,12 +1,12 @@
 
-{{#each products}}
+{{#each products.docs}}
     <article class="card-container">
         <div class="card">
                 <section class="card-image"><img width="100px" src="{{thumbnail}}" alt="{{thumbnail}}"></section>
                 <section class="card-info">
-                    <h3 class="card-info-title">{{this.title}}</h3>
-                    <p class="card-info-description">{{this.description}}</p>
-                    <p class="card-info-price">${{this.price}}</p>
+                    <h3 class="card-info-title">{{title}}</h3>
+                    <p class="card-info-description">{{description}}</p>
+                    <p class="card-info-price">${{price}}</p>
                 </section>
         </div>
     </article>

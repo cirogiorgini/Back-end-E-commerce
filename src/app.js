@@ -7,7 +7,10 @@ const productsRouter = require('./routes/products');
 const cartRouter = require('./routes/cart');
 const realTimeProducts = require('./routes/realTimeProducts');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
+const ProductManager = require('./dao/dbManager/productManager');
+const CartManager = require('./dao/dbManager/cartManager')
 
 const app = express();
 
@@ -30,18 +33,27 @@ app.use('/', realTimeProducts);
 app.use('/', productsRouter);
 app.use('/', cartRouter);
 
-// Configurar WebSockets
-io.on('connection', (socket) => {
-    console.log(`Nuevo cliente conectado via WebSocket con id ${socket.id}`);
-});
 
-// Asignar el objeto io al app para que esté disponible en otros archivos
-app.set('io', io);
+const main = async () => {
 
-const PORT = 8080;
-httpServer.listen(PORT, () => {
-    console.log(`Servidor en ejecución en el puerto ${PORT}`);
-});
+    await mongoose.connect('mongodb://localhost:27017/Backend-E-commerce', {
+        dbName: 'Backend-E-commerce'
+    })
+
+    const productManager = new ProductManager();
+    await productManager.prepare();
+    app.set('productManager', productManager);
+
+    const cartManager = new CartManager();
+    await cartManager.prepare();
+    app.set('cartManager', cartManager);
+
+    app.listen(8080);
+
+    console.log('Servidor cargado!' + '\n' + 'http://localhost:8080/api/products')
+}
+
+main();
 
 
 module.exports = app;

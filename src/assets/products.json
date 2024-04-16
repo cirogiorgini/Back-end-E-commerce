@@ -1,0 +1,372 @@
+[
+  {
+    "title": "Teléfono 1",
+    "description": "Un teléfono inteligente de última generación.",
+    "price": 599,
+    "thumbnail": "Sin Imagen",
+    "code": "ABCD123",
+    "status": true,
+    "stock": 50,
+    "category": "Teléfono"
+  },
+  {
+    "title": "Componente de Computadora 1",
+    "description": "Un componente esencial para tu PC.",
+    "price": 129,
+    "thumbnail": "Sin Imagen",
+    "code": "EFGH456",
+    "status": true,
+    "stock": 25,
+    "category": "Componente de Computadora"
+  },
+  {
+    "title": "Periférico 1",
+    "description": "Un accesorio útil para tu computadora.",
+    "price": 49,
+    "thumbnail": "Sin Imagen",
+    "code": "IJKL789",
+    "status": true,
+    "stock": 70,
+    "category": "Periférico"
+  },
+  {
+    "title": "Hardware 1",
+    "description": "Un dispositivo hardware para tus necesidades de computación.",
+    "price": 299,
+    "thumbnail": "Sin Imagen",
+    "code": "MNOP456",
+    "status": true,
+    "stock": 40,
+    "category": "Hardware"
+  },
+  {
+    "title": "Teléfono 2",
+    "description": "Un teléfono inteligente de última generación.",
+    "price": 799,
+    "thumbnail": "Sin Imagen",
+    "code": "QRST123",
+    "status": true,
+    "stock": 60,
+    "category": "Teléfono"
+  },
+  {
+    "title": "Componente de Computadora 2",
+    "description": "Un componente esencial para tu PC.",
+    "price": 199,
+    "thumbnail": "Sin Imagen",
+    "code": "UVWX456",
+    "status": true,
+    "stock": 35,
+    "category": "Componente de Computadora"
+  },
+  {
+    "title": "Periférico 2",
+    "description": "Un accesorio útil para tu computadora.",
+    "price": 99,
+    "thumbnail": "Sin Imagen",
+    "code": "YZAB789",
+    "status": true,
+    "stock": 80,
+    "category": "Periférico"
+  },
+  {
+    "title": "Hardware 2",
+    "description": "Un dispositivo hardware para tus necesidades de computación.",
+    "price": 399,
+    "thumbnail": "Sin Imagen",
+    "code": "CDEF456",
+    "status": true,
+    "stock": 55,
+    "category": "Hardware"
+  },
+  {
+    "title": "Teléfono 3",
+    "description": "Un teléfono inteligente de última generación.",
+    "price": 699,
+    "thumbnail": "Sin Imagen",
+    "code": "GHIJ123",
+    "status": true,
+    "stock": 45,
+    "category": "Teléfono"
+  },
+  {
+    "title": "Componente de Computadora 3",
+    "description": "Un componente esencial para tu PC.",
+    "price": 149,
+    "thumbnail": "Sin Imagen",
+    "code": "KLMN456",
+    "status": true,
+    "stock": 30,
+    "category": "Componente de Computadora"
+  },
+  {
+    "title": "Periférico 3",
+    "description": "Un accesorio útil para tu computadora.",
+    "price": 69,
+    "thumbnail": "Sin Imagen",
+    "code": "OPQR789",
+    "status": true,
+    "stock": 65,
+    "category": "Periférico"
+  },
+  {
+    "title": "Hardware 3",
+    "description": "Un dispositivo hardware para tus necesidades de computación.",
+    "price": 499,
+    "thumbnail": "Sin Imagen",
+    "code": "STUV456",
+    "status": true,
+    "stock": 50,
+    "category": "Hardware"
+  },
+  {
+    "title": "Teléfono 4",
+    "description": "Un teléfono inteligente de última generación.",
+    "price": 899,
+    "thumbnail": "Sin Imagen",
+    "code": "WXYZ123",
+    "status": true,
+    "stock": 55,
+    "category": "Teléfono"
+  },
+  {
+    "title": "Componente de Computadora 4",
+    "description": "Un componente esencial para tu PC.",
+    "price": 179,
+    "thumbnail": "Sin Imagen",
+    "code": "BCDE456",
+    "status": true,
+    "stock": 20,
+    "category": "Componente de Computadora"
+  },
+  {
+    "title": "Periférico 4",
+    "description": "Un accesorio útil para tu computadora.",
+    "price": 79,
+    "thumbnail": "Sin Imagen",
+    "code": "FGHI789",
+    "status": true,
+    "stock": 90,
+    "category": "Periférico"
+  },
+  {
+    "title": "Hardware 4",
+    "description": "Un dispositivo hardware para tus necesidades de computación.",
+    "price": 599,
+    "thumbnail": "Sin Imagen",
+    "code": "JKLM456",
+    "status": true,
+    "stock": 65,
+    "category": "Hardware"
+  },
+  {
+    "title": "Teléfono 5",
+    "description": "Un teléfono inteligente de última generación.",
+    "price": 999,
+    "thumbnail": "Sin Imagen",
+    "code": "NOPQ123",
+    "status": true,
+    "stock": 70,
+    "category": "Teléfono"
+  },
+  {
+    "title": "Componente de Computadora 5",
+    "description": "Un componente esencial para tu PC.",
+    "price": 249,
+    "thumbnail": "Sin Imagen",
+    "code": "RSTU456",
+    "status": true,
+    "stock": 40,
+    "category": "Componente de Computadora"
+  },
+  {
+    "title": "Periférico 5",
+    "description": "Un accesorio útil para tu computadora.",
+    "price": 129,
+    "thumbnail": "Sin Imagen",
+    "code": "VWXY789",
+    "status": true,
+    "stock": 75,
+    "category": "Periférico"
+  },
+  {
+    "title": "Hardware 5",
+    "description": "Un dispositivo hardware para tus necesidades de computación.",
+    "price": 699,
+    "thumbnail": "Sin Imagen",
+    "code": "ZABC456",
+    "status": true,
+    "stock": 60,
+    "category": "Hardware"
+  },
+  {
+    "title": "Teléfono 6",
+    "description": "Un teléfono inteligente de última generación.",
+    "price": 799,
+    "thumbnail": "Sin Imagen",
+    "code": "DEFG123",
+    "status": true,
+    "stock": 80,
+    "category": "Teléfono"
+  },
+  {
+    "title": "Componente de Computadora 6",
+    "description": "Un componente esencial para tu PC.",
+    "price": 179,
+    "thumbnail": "Sin Imagen",
+    "code": "HIJK456",
+    "status": true,
+    "stock": 50,
+    "category": "Componente de Computadora"
+  },
+  {
+    "title": "Periférico 6",
+    "description": "Un accesorio útil para tu computadora.",
+    "price": 89,
+    "thumbnail": "Sin Imagen",
+    "code": "LMNO789",
+    "status": true,
+    "stock": 85,
+    "category": "Periférico"
+  },
+  {
+    "title": "Hardware 6",
+    "description": "Un dispositivo hardware para tus necesidades de computación.",
+    "price": 799,
+    "thumbnail": "Sin Imagen",
+    "code": "PQRS456",
+    "status": true,
+    "stock": 70,
+    "category": "Hardware"
+  },
+  {
+    "title": "Teléfono 7",
+    "description": "Un teléfono inteligente de última generación.",
+    "price": 599,
+    "thumbnail": "Sin Imagen",
+    "code": "TUVW123",
+    "status": true,
+    "stock": 90,
+    "category": "Teléfono"
+  },
+  {
+    "title": "Componente de Computadora 7",
+    "description": "Un componente esencial para tu PC.",
+    "price": 199,
+    "thumbnail": "Sin Imagen",
+    "code": "XYZA456",
+    "status": true,
+    "stock": 60,
+    "category": "Componente de Computadora"
+  },
+  {
+    "title": "Periférico 7",
+    "description": "Un accesorio útil para tu computadora.",
+    "price": 99,
+    "thumbnail": "Sin Imagen",
+    "code": "BCDE789",
+    "status": true,
+    "stock": 95,
+    "category": "Periférico"
+  },
+  {
+    "title": "Hardware 7",
+    "description": "Un dispositivo hardware para tus necesidades de computación.",
+    "price": 499,
+    "thumbnail": "Sin Imagen",
+    "code": "EFGH456",
+    "status": true,
+    "stock": 80,
+    "category": "Hardware"
+  },
+  {
+    "title": "Teléfono 8",
+    "description": "Un teléfono inteligente de última generación.",
+    "price": 699,
+    "thumbnail": "Sin Imagen",
+    "code": "IJKL123",
+    "status": true,
+    "stock": 95,
+    "category": "Teléfono"
+  },
+  {
+    "title": "Componente de Computadora 8",
+    "description": "Un componente esencial para tu PC.",
+    "price": 149,
+    "thumbnail": "Sin Imagen",
+    "code": "MNOP456",
+    "status": true,
+    "stock": 70,
+    "category": "Componente de Computadora"
+  },
+  {
+    "title": "Periférico 8",
+    "description": "Un accesorio útil para tu computadora.",
+    "price": 69,
+    "thumbnail": "Sin Imagen",
+    "code": "QRST789",
+    "status": true,
+    "stock": 100,
+    "category": "Periférico"
+  },
+  {
+    "title": "Hardware 8",
+    "description": "Un dispositivo hardware para tus necesidades de computación.",
+    "price": 599,
+    "thumbnail": "Sin Imagen",
+    "code": "UVWX456",
+    "status": true,
+    "stock": 85,
+    "category": "Hardware"
+  },
+  {
+    "title": "Teléfono 9",
+    "description": "Un teléfono inteligente de última generación.",
+    "price": 799,
+    "thumbnail": "Sin Imagen",
+    "code": "YZAB123",
+    "status": true,
+    "stock": 100,
+    "category": "Teléfono"
+  },
+  {
+    "title": "Componente de Computadora 9",
+    "description": "Un componente esencial para tu PC.",
+    "price": 199,
+    "thumbnail": "Sin Imagen",
+    "code": "CDEF456",
+    "status": true,
+    "stock": 80,
+    "category": "Componente de Computadora"
+  },
+  {
+    "title": "Periférico 9",
+    "description": "Un accesorio útil para tu computadora.",
+    "price": 89,
+    "thumbnail": "Sin Imagen",
+    "code": "GHIJ789",
+    "status": true,
+    "stock": 110,
+    "category": "Periférico"
+  },
+  {
+    "title": "Hardware 9",
+    "description": "Un dispositivo hardware para tus necesidades de computación.",
+    "price": 699,
+    "thumbnail": "Sin Imagen",
+    "code": "KLMN456",
+    "status": true,
+    "stock": 90,
+    "category": "Hardware"
+  },
+  {
+    "title": "Teléfono 10",
+    "description": "Un teléfono inteligente de última generación.",
+    "price": 899,
+    "thumbnail": "Sin Imagen",
+    "code": "OPQR123",
+    "status": true,
+    "stock": 110,
+    "category": "Teléfono"
+  }
+]

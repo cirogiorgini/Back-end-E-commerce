@@ -1,18 +1,19 @@
 const { Router } = require('express')
-
 const router = Router()
-const data = require('../products.json');
 
-router.get(`/home`, (_, res) => {
+
+router.get('/home', async (req, res) => {
+
+    const ProductManager = req.app.get("productManager")
+    const products = await ProductManager.getProducts(req.query)
     
-    const product = {
-        products: data,
-        styles:['index.css'],
-        scripts: ['index.js'],
-        useWS: true,
-    }
-
-    res.render('home', product)
+    res.render('home', {
+        title: 'Products',
+        products,
+        styles: [
+            'index.css'
+        ]
+    })
 })
 
 
