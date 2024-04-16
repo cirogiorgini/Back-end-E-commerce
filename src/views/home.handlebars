@@ -1,24 +1,27 @@
-
-{{#each products.docs}}
+<section class="home">
     <article class="card-container">
-        <div class="card">
-                <section class="card-image"><img width="100px" src="{{thumbnail}}" alt="{{thumbnail}}"></section>
-                <section class="card-info">
-                    <h3 class="card-info-title">{{title}}</h3>
-                    <p class="card-info-description">{{description}}</p>
-                    <p class="card-info-price">${{price}}</p>
-                    <button>Agregar al carrito</button>
-                </section>
-        </div>
+        {{#each products.docs}}
+                <div class="card">
+                        <section class="card-image"><img width="100px" src="{{thumbnail}}" alt="{{thumbnail}}"></section>
+                        <section class="card-info">
+                            <h3 class="card-info-title">{{title}}</h3>
+                            <p class="card-info-description">{{description}}</p>
+                            <p class="card-info-price">${{price}}</p>
+                            <button>Agregar al carrito</button>
+                        </section>
+                </div>
+        {{/each}}
     </article>
-{{/each}}
+    <div>
+        Current page: {{products.page}}
+        {{#if products.hasPrevPage}}
+            <a href="/home?page={{products.prevPage}}&limit={{products.limit}}&sort={{products.sort}}">Prev</a>
+        {{/if}}
 
 
-Current page: {{products.page}}
-{{#if products.hasPrevPage}}
-    <a href="/home?page={{data.prevPage}}">Prev</a>
-{{/if}}
+        {{#if products.hasNextPage}}
+            <a href="/home?page={{products.nextPage}}&limit={{products.limit}}&sort={{products.sort}}">Next</a>
+        {{/if}}
+    </div>
+</section>
 
-{{#if products.hasNextPage}}
-    <a href="/home?page={{data.nextPage}}">Next</a>
-{{/if}}

@@ -1,12 +1,15 @@
-body{
+
+
+.card-container{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 3rem  ;
+    
 }
 
 .card{
     display: flex; 
     gap: 1 rem;
+    margin-top: 1rem;
     width: 500px;
     height: 150px;
     background-color: rgb(232, 230, 230);
@@ -27,4 +30,10 @@ body{
 }
 .input{
     padding-bottom: 5px;
+}
+
+.home{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem  ;
 }
