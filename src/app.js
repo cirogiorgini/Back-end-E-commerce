@@ -36,7 +36,7 @@ app.use('/', cartRouter);
 
 const main = async () => {
 
-    await mongoose.connect('mongodb://localhost:27017/Backend-E-commerce', {
+    await mongoose.connect("mongodb+srv://giorginiciro:8D2FjdonVtRkRsVN@Cluster0.df9mjx9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
         dbName: 'Backend-E-commerce'
     })
 

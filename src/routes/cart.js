@@ -52,6 +52,18 @@ router.delete('/api/carts/:cid/', async (req, res) => {
     }
 });
 
+// DELETE: Eliminar un producto específico del carrito
+router.delete('/api/carts/:cid/products/:pid', async (req, res) => {
+    const { cid, pid } = req.params;
+    try {
+        await cartManager.deleteProductFromCart(pid, cid);
+        res.json({ message: `Producto con ID ${pid} eliminado del carrito ${cid}` });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
 
 // PUT: Actualizar el carrito con un arreglo de productos
 router.put('/api/carts/:cid', async (req, res) => {

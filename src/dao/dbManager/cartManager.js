@@ -83,21 +83,28 @@ class CartManager {
             throw new Error('Hubo un error al obtener el ID del carrito.')
         }
     }
+
     async deleteProductFromCart(productId, cartId) {
         try {
             const cart = await Carts.findById(cartId);
             if (!cart) {
                 throw new Error('El carrito no existe.');
             }
-
+    
+            const productIndex = cart.products.findIndex(p => p._id.equals(productId));
+            if (productIndex === -1) {
+                throw new Error('El producto no se encontró en el carrito.');
+            }
+    
             await cart.updateOne({ $pull: { products: { _id: productId } } });
-
+    
             console.log(`Se eliminó el producto ${productId} del carrito ${cartId}`);
         } catch (error) {
             console.error('Error al eliminar el producto del carrito:', error);
-            throw new Error('Error al eliminar el producto del carrito');
+            throw new Error('Hubo un error al eliminar el producto del carrito');
         }
     }
+    
 
     async updateCart(cartId, products) {
         try {
