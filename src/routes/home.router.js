@@ -2,6 +2,45 @@ const { Router } = require('express')
 const router = Router()
 
 
+router.get('/',  (req, res) => {
+    try {
+        const isLoggedIn =  ![null, undefined].includes(req.session.user)
+        res.render('start', {
+            title: 'start',
+            isLoggedIn,
+            isNotLoggedIn: !isLoggedIn,
+            scripts: [
+                'index.js'
+            ],
+            styles: [
+                'index.css'
+            ]
+        })
+    } catch (err) {
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+})
+
+router.get('/login', (_, res) => {
+    res.render('login', {
+        styles: [
+            'index.css'
+        ],
+        title: 'Login'
+    });
+});
+
+router.get('/register', (_, res) => {
+    res.render('register', {
+        styles: [
+            'styles.css'
+        ],
+        title: 'Register'
+    });
+});
+
+
+
 router.get('/home', async (req, res) => {
 
     const ProductManager = req.app.get("productManager")

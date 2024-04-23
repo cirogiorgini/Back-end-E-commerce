@@ -8,11 +8,14 @@ const cartRouter = require('./routes/cart');
 const realTimeProducts = require('./routes/realTimeProducts');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+const { dbName, mongoUrl } = require('./dbConfig')
 const ProductManager = require('./dao/dbManager/productManager');
-const CartManager = require('./dao/dbManager/cartManager')
-
+const CartManager = require('./dao/dbManager/cartManager');
+const UserManager = require('./dao/dbManager/userManager');
+const sessionRouter = require('./routes/session.router');
+const sessionMiddleware = require('./session/mongoStorage')
 const app = express();
+
 
 // Crear el servidor HTTP
 const httpServer = createServer(app); 
@@ -25,6 +28,7 @@ app.set('view engine', 'handlebars');
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(sessionMiddleware);
 app.use(express.static(`${__dirname}/../public`));
 app.use(express.urlencoded({ extended: true }));
 
@@ -32,13 +36,18 @@ app.use('/', viewsRouter);
 app.use('/', realTimeProducts);
 app.use('/', productsRouter);
 app.use('/', cartRouter);
+app.use('/', sessionRouter);
 
 
 const main = async () => {
 
-    await mongoose.connect("mongodb+srv://giorginiciro:8D2FjdonVtRkRsVN@Cluster0.df9mjx9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
-        dbName: 'Backend-E-commerce'
+    await mongoose.connect(mongoUrl, {
+        dbName: dbName
     })
+
+    const userManager = new UserManager();
+    await userManager.prepare();
+    app.set('userManager', userManager);
 
     const productManager = new ProductManager();
     await productManager.prepare();
