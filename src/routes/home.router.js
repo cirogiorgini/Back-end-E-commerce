@@ -10,6 +10,9 @@ router.get('/home', async (req, res) => {
     res.render('home', {
         title: 'Products',
         products,
+        scripts: [
+            'index.js'
+        ],
         styles: [
             'index.css'
         ]
@@ -29,6 +32,9 @@ router.get('/cart/:cid', async (req, res) => {
         res.render('cart', {
             title: 'Carrito',
             products,
+            scripts: [
+                'index.js'
+            ],
             styles: [
                 'index.css'
             ]

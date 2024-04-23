@@ -50,7 +50,7 @@ const main = async () => {
 
     app.listen(8080);
 
-    console.log('Servidor cargado!' + '\n' + 'http://localhost:8080/api/products')
+    console.log('Servidor cargado!' + '\n' + 'http://localhost:8080/home')
 }
 
 main();

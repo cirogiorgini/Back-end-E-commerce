@@ -5,9 +5,10 @@
                         <section class="card-image"><img width="100px" src="{{thumbnail}}" alt="{{thumbnail}}"></section>
                         <section class="card-info">
                             <h3 class="card-info-title">{{title}}</h3>
+                            <p id="productId" >{{_id}}</p>
                             <p class="card-info-description">{{description}}</p>
                             <p class="card-info-price">${{price}}</p>
-                            <button>Agregar al carrito</button>
+                            <button id="btnAddToCart">Agregar al carrito</button>
                         </section>
                 </div>
         {{/each}}

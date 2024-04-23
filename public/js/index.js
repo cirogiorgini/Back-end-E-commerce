@@ -1,69 +1,40 @@
-const socket = io();
+const btnAddToCart = document.getElementById("btnAddToCart");
+const productId = document.getElementById("productId");
+const cartId = "6626c170c4292876fbfd9902"; // ID del carrito especificado
 
-socket.on('connect', () => {
-    console.log('Conectado al servidor');
+btnAddToCart.addEventListener('click', async (event) => {
+    console.log("Botón de agregar al carrito clickeado");
+
+    event.preventDefault();
+
+    try {
+        const response = await addProductToCart(cartId, productId.textContent);
+        console.log("Producto agregado al carrito:", response);
+    } catch (error) {
+        console.error('Error al agregar el producto al carrito:', error);
+    }
 });
 
-socket.on('newProduct', (newProduct) => {
-    const container = document.getElementById('productFeed');
-
-    const divContainer = document.createElement('div');
-    divContainer.classList.add('product');
-
-    const title = document.createElement('h4');
-    title.innerText = newProduct.title;
-
-    const thumbnail = document.createElement('img');
-    thumbnail.setAttribute('src', newProduct.thumbnail);
-    thumbnail.setAttribute('alt', newProduct.thumbnail);
-
-    const divInfo = document.createElement('div');
-    divInfo.classList.add('product__info');
-
-    const description = document.createElement('p');
-    description.innerText = newProduct.description;
-
-    const price = document.createElement('p');
-    price.innerText = `Precio: ${newProduct.price}`;
-
-    const stock = document.createElement('p');
-    stock.innerText = `Stock: ${newProduct.stock}`;
-
-    const code = document.createElement('p');
-    code.innerText = `Código: ${newProduct.code}`;
-
-    divInfo.append(description, price, stock, code);
-    divContainer.append(title, thumbnail, divInfo);
-    container.append(divContainer);
-});
-
-socket.on('updateFeed', (products) => {
-    const container = document.getElementById('card-container');
-    container.innerHTML = '';
-
-    products.forEach((product) => {
-        const divContainer = document.createElement('div');
-        divContainer.classList.add('product');
-
-        const title = document.createElement('h3');
-        title.innerText = product.title;
-
-        const thumbnail = document.createElement('img');
-        thumbnail.setAttribute('src', product.thumbnail);
-        thumbnail.setAttribute('alt', product.thumbnail);
-
-        const divInfo = document.createElement('div');
-        divInfo.classList.add('product__info');
-
-        const description = document.createElement('p');
-        description.innerText = product.description;
-
-        const price = document.createElement('p');
-        price.innerText = `Precio: ${product.price}`;
+async function addProductToCart(cid, pid){
+    try{
+        console.log("ID del producto:", pid); // Agregar esta línea
+        const response = await fetch(
+            `./api/carts/${cid}/products/${pid}`, {
+            method:'POST',
+            headers: {
+    
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        return response.json();
+    }
+    catch(err){
+        console.log(err);
+    }
+}
 
 
-        divInfo.append(description, price);
-        divContainer.append(title, thumbnail, divInfo);
-        container.append(divContainer);
-    });
-});
+
+
+
+
