@@ -1,4 +1,10 @@
 <section class="home">
+    <div>
+        {{#if isLoggedIn}}
+            <h1>bienvenido {{firstName}} {{lastName}}</h1>
+            <p>rol: {{rol}}</p>
+        {{/if}}
+    </div>
     <article class="card-container">
         {{#each products.docs}}
                 <div class="card">
@@ -25,4 +31,3 @@
         {{/if}}
     </div>
 </section>
-

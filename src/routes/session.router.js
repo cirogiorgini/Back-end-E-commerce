@@ -1,20 +1,35 @@
 const { Router } = require('express')
-const User = require('../dao/models/user.mode')
+const User = require('../dao/models/user.model')
 const router = Router()
 
 
 
-router.post('/api/sessions/login',  async (req, res) => {
-    const { email, password } = req.body
+router.post('/api/sessions/login', async (req, res) => {
+    const { email, password } = req.body;
 
-    const user = await User.findOne({ email, password })
-    if (!user) {
-        return res.status(400).send('Invalid email or password!')
+    // Verificar si el usuario es administrador
+    const isAdmin = email === 'adminCoder@coder.com' && password === 'adminCod3r123';
+
+    // Verificar las credenciales del usuario
+    let user;
+    if (isAdmin) {
+        // Si el usuario es administrador, no necesitas buscar en la base de datos
+        user = { _id: 'admin', email: 'adminCoder@coder.com', rol: 'admin' };
+    } else {
+        // Si no es administrador, busca en la base de datos
+        user = await User.findOne({ email, password });
+        if (!user) {
+            return res.status(400).send('Invalid email or password!');
+        }
     }
 
-    req.session.user = { id: user._id.toString(), email: user.email }
-    res.redirect('/home')
-})
+    // Establecer la sesión del usuario
+    req.session.user = { id: user._id.toString(), email: user.email, rol: user.rol };
+
+    // Redirigir al home
+    res.redirect('/home');
+});
+
 
 router.get('/api/sessions/logout', (req, res) => {
     req.session.destroy(_ => {

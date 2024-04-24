@@ -30,6 +30,7 @@ router.get('/login', (_, res) => {
     });
 });
 
+
 router.get('/register', (_, res) => {
     res.render('register', {
         styles: [
@@ -39,24 +40,85 @@ router.get('/register', (_, res) => {
     });
 });
 
+router.get('/profile', async (req, res) => {
+    try {
+        const isLoggedIn = req.session.user !== undefined;
+        console.log(isLoggedIn)
+
+        // Verifica si req.session.user está definido antes de acceder a su propiedad _id
+        const idFromSession = req.session.user ? req.session.user._id : null;
+        console.log(idFromSession)
+        if (!idFromSession) {
+            // Si no hay un ID de sesión definido, redirige al usuario a la página de inicio de sesión u otra página relevante
+            return res.redirect('/login'); // Cambia '/login' por la ruta deseada
+        }
+
+        const userManager = req.app.get('userManager');
+        const user = await userManager.getUser(idFromSession);
+
+        res.render('profile', {
+            styles: ['styles.css'],
+            titlePage: 'Perfil',
+            user: {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                age: user.age,
+                email: user.email,
+                rol: user.rol
+            },
+            isLoggedIn
+        });
+    } catch (error) {
+        console.error('Error al cargar los datos del usuario:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+
+
+
+
 
 
 router.get('/home', async (req, res) => {
+    try {
+        const ProductManager = req.app.get("productManager");
+        const products = await ProductManager.getProducts(req.query);
 
-    const ProductManager = req.app.get("productManager")
-    const products = await ProductManager.getProducts(req.query)
-    
-    res.render('home', {
-        title: 'Products',
-        products,
-        scripts: [
-            'index.js'
-        ],
-        styles: [
-            'index.css'
-        ]
-    })
-})
+        // Verificar si el usuario está autenticado
+        const isLoggedIn = ![null, undefined].includes(req.session.user);
+
+        // Obtener el id de la sesión del usuario
+        const userId = req.session.user ? req.session.user.id : null;
+        console.log('ID del usuario de la sesión:', userId);
+
+
+        // Obtener los datos del usuario utilizando el UserManager
+        const userManager = req.app.get('userManager');
+        const user = await userManager.getUser(userId);
+
+        // Extraer los datos del usuario
+        const rol = user ? user.rol : null;
+        const firstName = user ? user.firstName : null;
+        const lastName = user ? user.lastName : null;
+
+        res.render('home', {
+            title: 'Products',
+            products,
+            isLoggedIn,
+            rol,
+            firstName,
+            lastName,
+            scripts: ['index.js'],
+            styles: ['index.css']
+        });
+    } catch (error) {
+        console.error('Error al cargar los datos del usuario:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 router.get('/cart/:cid', async (req, res) => {
     try {
