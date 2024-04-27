@@ -45,16 +45,11 @@ router.get('/profile', async (req, res) => {
         const isLoggedIn = req.session.user !== undefined;
         console.log(isLoggedIn)
 
-        // Verifica si req.session.user está definido antes de acceder a su propiedad _id
-        const idFromSession = req.session.user ? req.session.user._id : null;
-        console.log(idFromSession)
-        if (!idFromSession) {
-            // Si no hay un ID de sesión definido, redirige al usuario a la página de inicio de sesión u otra página relevante
-            return res.redirect('/login'); // Cambia '/login' por la ruta deseada
-        }
+        const userId = req.session.user ? req.session.user.id : null;
+        console.log('ID del usuario de la sesión:', userId);
 
         const userManager = req.app.get('userManager');
-        const user = await userManager.getUser(idFromSession);
+        const user = await userManager.getUser(userId);
 
         res.render('profile', {
             styles: ['styles.css'],
