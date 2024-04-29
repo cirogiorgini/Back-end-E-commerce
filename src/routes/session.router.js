@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const User = require('../dao/models/user.model')
 const router = Router()
+const {hashPassword} = require('../utils/hasing')
 
 
 
@@ -46,7 +47,7 @@ router.post('/api/sessions/register', async  (req, res) => {
             lastName,
             age: +age,
             email,
-            password
+            password: hashPassword(password)
         })
 
         res.redirect('/')
