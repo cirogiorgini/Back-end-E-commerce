@@ -1,27 +1,29 @@
 const { Router } = require('express')
 const User = require('../dao/models/user.model')
 const router = Router()
-const {hashPassword} = require('../utils/hasing')
+const {hashPassword, isValidPassword} = require('../utils/hasing')
 
 
 
 router.post('/api/sessions/login', async (req, res) => {
     const { email, password } = req.body;
 
-    // Verificar si el usuario es administrador
+    
     const isAdmin = email === 'adminCoder@coder.com' && password === 'adminCod3r123';
 
-    // Verificar las credenciales del usuario
+    
     let user;
     if (isAdmin) {
-        // Si el usuario es administrador, no necesitas buscar en la base de datos
         user = { _id: 'admin', email: 'adminCoder@coder.com', rol: 'admin' };
     } else {
-        // Si no es administrador, busca en la base de datos
-        user = await User.findOne({ email, password });
+        user = await User.findOne({ email });
         if (!user) {
             return res.status(400).send('Invalid email or password!');
         }
+    }
+
+    if (!isValidPassword(password, user.password)) {
+        return res.status(400).send('Invalid  password!');
     }
 
     // Establecer la sesión del usuario
