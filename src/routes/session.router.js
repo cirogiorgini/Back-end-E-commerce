@@ -33,5 +33,20 @@ router.get('/api/sessions/failregister', (req, res) => {
     res.send({ status: 'error', message: 'Se ha producido un error' })
 })
 
+router.get('/api/sessions/github', (req, res, next) => {
+    console.log("autenticando usuario con github");
+    next();
+}, passport.authenticate('github', { scope: ['user:email'] }));
+
+router.get('/api/sessions/githubcallback', (req, res, next) => {
+    console.log("callback de autenticacion recibida");
+    next();
+}, passport.authenticate('github', { failureRedirect: '/api/sessions/faillogin' }), (req, res) => {
+    req.session.user = { id: req.user._id };
+    console.log("usuario autenticado:", req.session.user);
+    res.redirect('/home');
+});
+
+
 
 module.exports = router

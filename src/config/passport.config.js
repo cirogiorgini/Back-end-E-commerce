@@ -71,6 +71,7 @@ const initializeStrategy = () => {
             done(err)
         }
     }))
+    
 }
 
 module.exports = initializeStrategy
