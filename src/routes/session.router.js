@@ -1,38 +1,22 @@
 const { Router } = require('express')
-const User = require('../dao/models/user.model')
+const passport = require('passport')
+
 const router = Router()
-const {hashPassword, isValidPassword} = require('../utils/hasing')
 
 
-
-router.post('/api/sessions/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    
-    const isAdmin = email === 'adminCoder@coder.com' && password === 'adminCod3r123';
-
-    
-    let user;
-    if (isAdmin) {
-        user = { _id: 'admin', email: 'adminCoder@coder.com', rol: 'admin' };
-    } else {
-        user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).send('Invalid email or password!');
-        }
+router.post('/api/sessions/login', passport.authenticate('login', { failureRedirect: '/api/sessions/faillogin' }), (req, res) => {
+    console.log(req.body)
+    req.session.user = {
+        id: req.user._id,
+        email: req.user.email
     }
 
-    if (!isValidPassword(password, user.password)) {
-        return res.status(400).send('Invalid  password!');
-    }
+    res.redirect('/home')
+})
 
-    // Establecer la sesión del usuario
-    req.session.user = { id: user._id.toString(), email: user.email, rol: user.rol };
-
-    // Redirigir al home
-    res.redirect('/home');
-});
-
+router.get('/api/sessions/faillogin', (req, res) => {
+    res.send({ status: 'error', message: 'Credenciales incorrectas' })
+})
 
 router.get('/api/sessions/logout', (req, res) => {
     req.session.destroy(_ => {
@@ -40,24 +24,14 @@ router.get('/api/sessions/logout', (req, res) => {
     })
 })
 
-router.post('/api/sessions/register', async  (req, res) => {
-    const { firstName, lastName, email, age, password } = req.body
-
-    try {
-        await User.create({
-            firstName,
-            lastName,
-            age: +age,
-            email,
-            password: hashPassword(password)
-        })
-
-        res.redirect('/')
-    }
-    catch (err) {
-        console.log(err)
-        res.status(400).send('Error creating user!')
-    }
+router.post('/api/sessions/register', passport.authenticate('register', { failureRedirect: '/api/sessions/failregister' }), (req, res) => {
+    console.log(req.body)
+    res.redirect('/')
 })
+
+router.get('/api/sessions/failregister', (req, res) => {
+    res.send({ status: 'error', message: 'Se ha producido un error' })
+})
+
 
 module.exports = router

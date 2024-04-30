@@ -1,51 +1,53 @@
 const passport = require('passport')
 const { Strategy } = require('passport-local')
-const User = require('../dao/dbManager/userManager')
-const { createHash, isValidPassword } = require('../utils/hasing')
+const User = require('../dao/models/user.model')
+const { createHash, isValidPassword, hashedPassword } = require('../utils/hasing')
 
-const initialzeStrategy = () => {
+const initializeStrategy = () => {
+
     passport.use('register', new Strategy({
-        passReqToCallback: true,
+        passReqToCallback: true, 
         usernameField: 'email'
-    },     async (req, username, password, done) => {
+    }, async (req, username, password, done) => {
 
-        const { firstName, lastName, age } = req.body
+        const { firstName, lastName, age, email } = req.body
 
-       try{
+        try {
+            const user = await User.findOne({ email: username })
+            if (user) {
+                console.log('User already exists!')
+                return done(null, false)
+            }
 
-        const user = await User.createUser({email: username})
-        if(user){
-            console.log('El usuario ya existe')
-            return done(null, false)
-       }
+            const newUser = {
+                firstName,
+                lastName,
+                age: +age,
+                email,
+                password: createHash(password)
+            }
+            const result = await User.create(newUser)
 
-       const newUser = {
-           firstName,
-           lastName,
-           age: +age,
-           email,
-           password: createHash(password)
+            req.session.user = {email, _id: result._id.toString()}
+
+            // registro exitoso
+            return done(null, result)
         }
-        const result = await User.createUser(newUser)
-
-        return done(null, result)
-        
-    }
-
-    catch(err){
-        console.log(err)
-    }
+        catch (err) {
+            done(err)
+        }
 
     }))
 
     passport.serializeUser((user, done) => {
-        console.log('Serializando el usuario')
+        console.log('serialized!', user)
         done(null, user._id)
     })
 
+ 
     passport.deserializeUser(async (id, done) => {
-        console.log('Deserializando el usuario')
-        const user = await User.getUser(id)
+        console.log('deserialized!', id)
+        const user = await User.findById(id)
         done(null, user)
     })
 
@@ -53,21 +55,22 @@ const initialzeStrategy = () => {
         usernameField: 'email'
     }, async (username, password, done) => {
         try {
-            const user = await User.findOne({email: username})
-            if(!user){  
+            const user = await User.findOne({ email: username })
+            if (!user) {
+                console.log('User not found!')
                 return done(null, false)
             }
 
-            if(!isValidPassword(user, password)){
+            if (!isValidPassword(password, user.password)) {
                 return done(null, false)
             }
 
             return done(null, user)
-
-        } catch (error) {
-            done(error)
+        }
+        catch (err) {
+            done(err)
         }
     }))
 }
 
-module.exports = initialzeStrategy
+module.exports = initializeStrategy
