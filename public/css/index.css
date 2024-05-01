@@ -11,18 +11,17 @@ body{
     background-color:rgb(28, 28, 28);
 }
 .card-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    
+   display: flex;
+   flex-wrap: wrap;
+   width: 100%; 
+   gap: 1.5rem;
 }
 
 .card{
     display: flex; 
-    gap: 1 rem;
     margin-top: 1rem;
-    width: 500px;
-    height: 150px;
-    background-color: rgb(232, 230, 230);
+    width: 400px;
+    background-color: rgb(50, 50, 50);
     border-radius: 0.8rem;
 }
 
