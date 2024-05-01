@@ -1,9 +1,13 @@
-<div class="">
-    <h1>Hola {{user.firstName}} {{user.lastName}}</h1>
-    <h2>Datos del perfil:</h2>
-    <p>Edad: {{user.age}}</p>
-    <p>Email: {{user.email}}</p>
-    <p>Rol: {{user.rol}}</p>
-    <a href="/home">Inicio</a>
+<div class="profile">
+    <div class="profile-welcome">
+        <h1>Hola <span class="user">{{user.firstName}} {{user.lastName}}</h1></span>
+    </div>
+    <div class="profile-content">
+        <h2>Datos del perfil:</h2>
+        <p>Edad: {{user.age}}</p>
+        <p>Email: {{user.email}}</p>
+        <p>Rol: {{user.rol}}</p>
+        <a href="/home">Inicio</a>
+    </div>
 </div>
 

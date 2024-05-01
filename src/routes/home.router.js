@@ -52,7 +52,7 @@ router.get('/profile', async (req, res) => {
         const user = await userManager.getUser(userId);
 
         res.render('profile', {
-            styles: ['styles.css'],
+            styles: ['index.css'],
             titlePage: 'Perfil',
             user: {
                 firstName: user.firstName,
