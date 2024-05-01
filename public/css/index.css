@@ -10,6 +10,20 @@
 body{
     background-color:rgb(28, 28, 28);
 }
+
+.welcome {
+    text-align: center;
+   
+}
+
+.welcome h1{
+    padding-bottom: 0.5rem;
+}
+
+.user  {
+    color: #4B99E3;
+}
+
 .card-container{
    display: flex;
    flex-wrap: wrap;
@@ -23,6 +37,21 @@ body{
     width: 400px;
     background-color: rgb(50, 50, 50);
     border-radius: 0.8rem;
+    padding: 0.5rem;
+}
+
+.btn-card{
+    width: 100%;
+    background-color: #4B99E3;
+    border: none;
+    padding: 0.5rem 0rem 0.5rem 0rem;
+    border-radius: 0.7rem;
+}
+
+.btn-price{
+    display: flex;
+    gap: 1rem   ;
+    align-items: center;
 }
 
 .card-image{
