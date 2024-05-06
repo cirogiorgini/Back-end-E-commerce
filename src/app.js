@@ -18,6 +18,7 @@ const CartManager = require('./dao/dbManager/cartManager');
 const UserManager = require('./dao/dbManager/userManager');
 const initializeStrategy = require('./config/passport.config');
 const githublogin = require('./config/passport.github');
+require('dotenv').config();
 
 const app = express();
 
