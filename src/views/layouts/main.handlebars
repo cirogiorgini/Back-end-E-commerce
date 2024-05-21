@@ -8,6 +8,7 @@
     {{#each styles}}
      <link rel="stylesheet" href="/css/{{this}}">
     {{/each}} 
+  
    
 </head>
 <body>
@@ -29,6 +30,8 @@
     {{#if useWS}}
         <script src="/socket.io/socket.io.js"></script>
     {{/if}}
+    
+   
 
     {{#each scripts}}
         <script src="/js/{{this}}"></script>

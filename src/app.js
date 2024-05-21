@@ -17,6 +17,7 @@ const sessionRouter = require('./routes/session.router');
 const { dbName, mongoUrl } = require('./dbConfig')
 const initializeStrategy = require('./config/passport.config');
 const githublogin = require('./config/passport.github');
+require('dotenv').config();
 
 const app = express();
 
