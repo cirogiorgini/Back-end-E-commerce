@@ -1,7 +1,7 @@
 const passport = require('passport')
 const { Strategy } = require('passport-local')
-const User = require('../dao/models/user.model')
-const { createHash, isValidPassword, hashedPassword } = require('../utils/hasing')
+const User = require('../models/user.model')
+const { isValidPassword, hashPassword } = require('../utils/hasing')
 
 const initializeStrategy = () => {
 
@@ -24,7 +24,7 @@ const initializeStrategy = () => {
                 lastName,
                 age: +age,
                 email,
-                password: createHash(password)
+                password: hashPassword(password)
             }
             const result = await User.create(newUser)
 

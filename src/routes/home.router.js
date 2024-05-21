@@ -1,4 +1,5 @@
 const { Router } = require('express')
+
 const router = Router()
 
 
@@ -48,8 +49,8 @@ router.get('/profile', async (req, res) => {
         const userId = req.session.user ? req.session.user.id : null;
         console.log('ID del usuario de la sesión:', userId);
 
-        const userManager = req.app.get('userManager');
-        const user = await userManager.getUser(userId);
+        const UserController  = req.app.get('UserService');
+        const user = isLoggedIn ? await UserController.getUserById(userId) : null;
 
         res.render('profile', {
             styles: ['index.css'],
@@ -72,28 +73,22 @@ router.get('/profile', async (req, res) => {
 
 
 
-
-
-
-
 router.get('/home', async (req, res) => {
     try {
-        const ProductManager = req.app.get("productManager");
-        const products = await ProductManager.getProducts(req.query);
+        const ProductController = req.app.get("ProductController");
+        const UserController = req.app.get("UserService");
 
-        // Verificar si el usuario está autenticado
+        
+        const products = await ProductController.getProducts(req.query);
+        console.log(products)
+
         const isLoggedIn = ![null, undefined].includes(req.session.user);
-
-        // Obtener el id de la sesión del usuario
         const userId = req.session.user ? req.session.user.id : null;
         console.log('ID del usuario de la sesión:', userId);
 
+        const user = isLoggedIn ? await UserController.getUserById(userId) : null;
+        console.log('Datos del usuario obtenidos:', user);
 
-        // Obtener los datos del usuario utilizando el UserManager
-        const userManager = req.app.get('userManager');
-        const user = await userManager.getUser(userId);
-
-        // Extraer los datos del usuario
         const rol = user ? user.rol : null;
         const firstName = user ? user.firstName : null;
         const lastName = user ? user.lastName : null;
@@ -111,6 +106,9 @@ router.get('/home', async (req, res) => {
     } catch (error) {
         console.error('Error al cargar los datos del usuario:', error);
         res.status(500).json({ error: 'Internal Server Error' });
+        if (!res.headersSent) {
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
     }
 });
 

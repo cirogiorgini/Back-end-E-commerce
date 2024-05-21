@@ -8,14 +8,13 @@ const sessionMiddleware = require('./session/mongoStorage');
 const passport = require('passport');
 const mongoose = require('mongoose'); 
 const viewsRouter = require('./routes/home.router');
-const productsRouter = require('./routes/products');
-const cartRouter = require('./routes/cart');
-const realTimeProducts = require('./routes/realTimeProducts');
+const productsRouter = require('./routes/products.router');
+const ProductController = require('./controller/ProductController');
+const UserController = require('./controller/UserController');
+const UserService = require('./service/UserService');
+const cartRouter = require('./routes/cart.router');
 const sessionRouter = require('./routes/session.router');
 const { dbName, mongoUrl } = require('./dbConfig')
-const ProductManager = require('./dao/dbManager/productManager');
-const CartManager = require('./dao/dbManager/cartManager');
-const UserManager = require('./dao/dbManager/userManager');
 const initializeStrategy = require('./config/passport.config');
 const githublogin = require('./config/passport.github');
 
@@ -30,12 +29,16 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
 
+app.set('ProductController', ProductController);
+app.set('UserController', UserController);
+app.set('UserService', UserService);
+
 // Middlewares
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.static(`${__dirname}/../public`));
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); // Usar cookie-parser
+app.use(cookieParser()); 
 
 // Session middleware
 app.use(sessionMiddleware);
@@ -46,31 +49,17 @@ initializeStrategy();
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Rutas
+// RutaR
 app.use('/', viewsRouter);
-app.use('/', realTimeProducts);
-app.use('/', productsRouter);
-app.use('/', cartRouter);
+app.use('/api', productsRouter);
 app.use('/', sessionRouter);
+app.use('/api', cartRouter);
 
 // Conectar a la base de datos y preparar gestores
 const main = async () => {
     await mongoose.connect(mongoUrl, {
         dbName: dbName
     });
-
-    const userManager = new UserManager();
-    await userManager.prepare();
-    app.set('userManager', userManager);
-
-    const productManager = new ProductManager();
-    await productManager.prepare();
-    app.set('productManager', productManager);
-
-    const cartManager = new CartManager();
-    await cartManager.prepare();
-    app.set('cartManager', cartManager);
-
     app.listen(8080);
 
     console.log('http://localhost:8080');
