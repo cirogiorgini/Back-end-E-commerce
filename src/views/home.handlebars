@@ -7,23 +7,24 @@
     </div>
     <article class="card-container">
         {{#each products.docs}}
-                <div class="card">
-                        <section class="card-image"><img width="100px" src="{{thumbnail}}" alt="imagen"></section>
-                        <section class="card-info">
-                            <h3 class="card-info-title">{{title}}</h3>
-                            <br>
-                            <p id="productId" > id:  {{_id}}</p>
-                            <br>
-                            <p class="card-info-description">{{description}}</p>
-                            <br>
-                            <div class="btn-price">
-                                <p class="card-info-price">${{price}}</p>
-                                <button class="btn-card" id="btnAddToCart">Agregar al carrito</button>
-                            </div>
-                        </section>
-                </div>
+            <div class="card">
+                <section class="card-image"><img width="100px" src="{{thumbnail}}" alt="imagen"></section>
+                <section class="card-info">
+                    <h3 class="card-info-title">{{title}}</h3>
+                    <br>
+                    <p class="productId">id: {{_id}}</p>
+                    <br>
+                    <p class="card-info-description">{{description}}</p>
+                    <br>
+                    <div class="btn-price">
+                        <p class="card-info-price">${{price}}</p>
+                        <button class="btn-card" data-product-id="{{_id}}" data-cart-id="{{../cart}}">Agregar al carrito</button>
+                    </div>
+                </section>
+            </div>
         {{/each}}
     </article>
+
     <div>
         Current page: {{products.page}}
         {{#if products.hasPrevPage}}

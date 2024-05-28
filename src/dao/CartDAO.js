@@ -1,4 +1,6 @@
 const { Carts, Products } = require('../models');
+const Cart = require('../models/cart.model'); 
+const Product = require('../models/product.model'); 
 
 class CartDAO {
     async getCarts() {
@@ -9,11 +11,19 @@ class CartDAO {
         return Carts.create({ products: [] });
     }
 
+    async getCartById(cartId) {
+        const cart = await Cart.findById(cartId).populate('products.product');
+        if (!cart) {
+            throw new Error('Carrito no encontrado');
+        }
+        return cart;
+    }
+
     async addProductToCart(productId, cartId) {
-        const product = await Products.findById(productId);
+        const product = await Product.findById(productId);
         if (!product) throw new Error('El producto no existe');
 
-        const cart = await Carts.findById(cartId);
+        const cart = await Cart.findById(cartId);
         if (!cart) throw new Error('El carrito no existe');
 
         const existingProductIndex = cart.products.findIndex(p => p.product.equals(productId));
@@ -25,21 +35,6 @@ class CartDAO {
 
         await cart.save();
         return cart;
-    }
-
-    async getCartById(cartId) {
-        return Carts.findById(cartId).populate('products.product');
-    }
-
-    async deleteProductFromCart(productId, cartId) {
-        const cart = await Carts.findById(cartId);
-        if (!cart) throw new Error('El carrito no existe');
-
-        const productIndex = cart.products.findIndex(p => p.product.equals(productId));
-        if (productIndex === -1) throw new Error('El producto no se encontró en el carrito');
-
-        cart.products.splice(productIndex, 1);
-        await cart.save();
     }
 
     async updateCart(cartId, products) {

@@ -1,4 +1,5 @@
 const { Router } = require('express')
+const CartController = require('../controller/CartController');
 
 const router = Router()
 
@@ -54,13 +55,15 @@ router.get('/profile', async (req, res) => {
 
         res.render('profile', {
             styles: ['index.css'],
+            scripts: ['index.js'],
             titlePage: 'Perfil',
             user: {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 age: user.age,
                 email: user.email,
-                rol: user.rol
+                rol: user.rol,
+                cart: user.cart
             },
             isLoggedIn
         });
@@ -78,70 +81,50 @@ router.get('/home', async (req, res) => {
         const ProductController = req.app.get("ProductController");
         const UserController = req.app.get("UserService");
 
-        
         const products = await ProductController.getProducts(req.query);
-        console.log(products)
-
         const isLoggedIn = ![null, undefined].includes(req.session.user);
         const userId = req.session.user ? req.session.user.id : null;
-        console.log('ID del usuario de la sesión:', userId);
 
         const user = isLoggedIn ? await UserController.getUserById(userId) : null;
-        console.log('Datos del usuario obtenidos:', user);
-
-        const rol = user ? user.rol : null;
-        const firstName = user ? user.firstName : null;
-        const lastName = user ? user.lastName : null;
+        const cartId = user ? user.cart : null;
 
         res.render('home', {
             title: 'Products',
             products,
             isLoggedIn,
-            rol,
-            firstName,
-            lastName,
+            cartId,
+            rol: user ? user.rol : null,
+            firstName: user ? user.firstName : null,
+            lastName: user ? user.lastName : null,
             scripts: ['index.js'],
             styles: ['index.css']
         });
     } catch (error) {
         console.error('Error al cargar los datos del usuario:', error);
         res.status(500).json({ error: 'Internal Server Error' });
-        if (!res.headersSent) {
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
     }
 });
 
 
+
 router.get('/cart/:cid', async (req, res) => {
     try {
-        const cartId = req.params.cid
-    
-        const CartManager = req.app.get('cartManager')
-        const productToCart = await CartManager.getCartById(cartId)
-
-        const products = productToCart.products.map(d => d.toObject({ virtuals: true }))
-        console.log(productToCart)
+        const cartId = req.params.cid;
+        const cart = await CartController.getCartById(req, res);
+        const products = cart.products.map(d => d.toObject({ virtuals: true }));
 
         res.render('cart', {
             title: 'Carrito',
             products,
-            scripts: [
-                'index.js'
-            ],
-            styles: [
-                'index.css'
-            ]
-        })
-    }
-    catch (err) {
+            cartId,
+            scripts: ['index.js'],
+            styles: ['index.css']
+        });
+    } catch (error) {
+        console.error(error.message);
         res.status(500).json({ error: "Internal Server Error" });
-        throw (err)
-
     }
-
-})
-
+});
 
 
 module.exports = router

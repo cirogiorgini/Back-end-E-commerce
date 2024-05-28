@@ -23,34 +23,32 @@ class CartController {
 
     async addProductToCart(req, res) {
         try {
-            const { productId, cartId } = req.body;
-            const updatedCart = await CartService.addProductToCart(productId, cartId);
-            res.json(updatedCart);
+            const { pid, cid } = req.params;
+            const cart = await CartService.addProductToCart(pid, cid);
+            res.status(200).json(cart);
         } catch (error) {
-            console.error('Error al agregar un producto al carrito:', error);
-            res.status(500).json({ message: 'Error al agregar un producto al carrito' });
+            console.error('Error al agregar el producto al carrito:', error);
+            res.status(500).json({ message: 'Error al agregar el producto al carrito', error: error.message });
         }
     }
 
     async getCartById(req, res) {
         try {
-            const { cartId } = req.params;
+            const cartId = req.params.cid;
             const cart = await CartService.getCartById(cartId);
-            res.json(cart);
+            return cart;
         } catch (error) {
-            console.error('Error al obtener el carrito:', error);
-            res.status(500).json({ message: 'Error al obtener el carrito' });
+            throw new Error(`Error al obtener el carrito: ${error.message}`);
         }
     }
 
     async deleteProductFromCart(req, res) {
         try {
-            const { productId, cartId } = req.body;
-            await CartService.deleteProductFromCart(productId, cartId);
-            res.json({ message: 'Producto eliminado del carrito' });
+            const { pid, cid } = req.params;
+            await CartService.deleteProductFromCart(pid, cid);
+            res.status(204).send();
         } catch (error) {
-            console.error('Error al eliminar el producto del carrito:', error);
-            res.status(500).json({ message: 'Error al eliminar el producto del carrito' });
+            res.status(500).json({ message: 'Error al eliminar el producto del carrito', error });
         }
     }
 

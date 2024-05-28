@@ -53,7 +53,7 @@ app.use(passport.session());
 // RutaR
 app.use('/', viewsRouter);
 app.use('/api', productsRouter);
-app.use('/', sessionRouter);
+app.use('', sessionRouter);
 app.use('/api', cartRouter);
 
 // Conectar a la base de datos y preparar gestores
