@@ -88,7 +88,7 @@ class CartController {
 
     async purchaseCart(req, res) {
 
-        const userId = req.session.id;
+        const userId = req.user.email;
         const cartId = req.params.cid;
     
         try {
