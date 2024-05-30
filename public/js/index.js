@@ -32,6 +32,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const generateTicketBtn = document.getElementById('generateTicketBtn');
+    const cartId = generateTicketBtn.getAttribute('data-cart-id'); 
+
+    generateTicketBtn.addEventListener('click', async () => {
+        try {
+            const response = await fetch(`/api/carts/${cartId}/purchase`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al generar el ticket');
+            }
+
+            const result = await response.json();
+            console.log('Ticket generado:', result.ticket);
+            alert('Ticket generado correctamente');
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al generar el ticket');
+        }
+    });
+});
+
+
+
 
 
 

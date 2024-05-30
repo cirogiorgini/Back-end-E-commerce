@@ -3,10 +3,15 @@
     {{#each products}}
         <div class="product">
             <img src="{{this.product.thumbnail}}" alt="{{this.product.title}}">
-            <h2>{{this.product.title}}</h2>
-            <p>{{this.product.description}}</p>
-            <p>Price: ${{this.product.price}}</p>
-            <p>Quantity: {{this.quantity}}</p>
+            <div class="product-details">
+                <h2>{{this.product.title}}</h2>
+                <p>{{this.product.description}}</p>
+                <p>Price: ${{this.product.price}}</p>
+                <p>Quantity: {{this.quantity}}</p>
+            </div>
         </div>
     {{/each}}
 </div>
+
+<button id="generateTicketBtn" data-cart-id="{{cartId}}">Generar Ticket</button>
+

@@ -125,3 +125,52 @@ body{
 input{
     color:black;
 }
+
+
+h1 {
+    text-align: center;
+}
+
+.cart-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.product {
+    margin-left: 1.5rem;
+    width: 600px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgb(28, 28, 28);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.product img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.product-details {
+    padding: 10px;
+}
+
+.product-details h2 {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.product-details p {
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.product-details p:first-child {
+    font-weight: bold;
+}

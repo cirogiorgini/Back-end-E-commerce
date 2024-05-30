@@ -1,6 +1,7 @@
 const CartDAO = require('../dao/CartDAO');
 const Product = require('../models/product.model');
 const Cart = require('../models/cart.model');
+const TicketService = require('../service/ticket.service');
 
 class CartService {
     async getCarts() {
@@ -85,6 +86,35 @@ class CartService {
         }
 
         await CartDAO.updateCart(cartId, { $set: { products: [] } });
+    }
+
+    async purchaseCart(cartId, userId) {
+        const cart = await Cart.findById(cartId).populate('products.product');
+    
+        if (!cart) {
+            throw new Error('Carrito no encontrado');
+        }
+    
+        // Verificar el stock y crear el ticket
+        const ticket = await TicketService.createTicket(cart, userId);
+    
+        // Reducir el stock de los productos en el carrito
+        await Promise.all(cart.products.map(async (item) => {
+            const product = item.product;
+            const quantity = item.quantity;
+    
+            if (product.stock >= quantity) {
+                product.stock -= quantity;
+                await product.save();
+            } else {
+                throw new Error(`No hay suficiente stock para el producto ${product.title}`);
+            }
+        }));
+    
+        cart.products = [];
+        await cart.save();
+    
+        return ticket;
     }
 }
 

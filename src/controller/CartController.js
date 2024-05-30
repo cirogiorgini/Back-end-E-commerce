@@ -1,5 +1,6 @@
 const CartService = require('../service/CartService');
 
+
 class CartController {
     async getCarts(req, res) {
         try {
@@ -82,6 +83,21 @@ class CartController {
         } catch (error) {
             console.error('Error al vaciar el carrito:', error);
             res.status(500).json({ message: 'Error al vaciar el carrito' });
+        }
+    }
+
+    async purchaseCart(req, res) {
+
+        const userId = req.session.id;
+        const cartId = req.params.cid;
+    
+        try {
+            const ticket = await CartService.purchaseCart(cartId, userId);
+    
+            res.status(200).json({ ticket });
+        } catch (error) {
+            console.error('Error al comprar el carrito:', error);
+            res.status(500).json({ error: 'Error al comprar el carrito' });
         }
     }
 }
