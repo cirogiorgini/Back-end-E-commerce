@@ -43,13 +43,16 @@ class CartController {
         }
     }
 
-    async deleteProductFromCart(req, res) {
+    async deleteProduct(req, res) {
+        const { cid, pid } = req.params;
+    
         try {
-            const { pid, cid } = req.params;
-            await CartService.deleteProductFromCart(pid, cid);
-            res.status(204).send();
+            const deletedProduct = await CartService.deleteProductFromCart(cid, pid);
+    
+            res.status(200).json({ message: 'Product deleted from cart', product: deletedProduct });
         } catch (error) {
-            res.status(500).json({ message: 'Error al eliminar el producto del carrito', error });
+            console.error('Error deleting product from cart:', error);
+            res.status(500).json({ error: 'Error deleting product from cart' });
         }
     }
 

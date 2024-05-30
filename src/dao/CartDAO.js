@@ -19,6 +19,30 @@ class CartDAO {
         return cart;
     }
 
+    async  deleteProductFromCart(cartId, productId) {
+        try {
+            const cart = await Cart.findById(cartId);
+    
+            if (!cart) {
+                throw new Error('Cart not found');
+            }
+    
+            const productIndex = cart.products.findIndex(item => item.product.equals(productId));
+    
+            if (productIndex === -1) {
+                throw new Error('Product not found in cart');
+            }
+    
+            const product = cart.products[productIndex];
+            cart.products.splice(productIndex, 1);
+            await cart.save();
+    
+            return product;
+        } catch (error) {
+            throw new Error(`Error deleting product from cart: ${error.message}`);
+        }
+    }
+
     async addProductToCart(productId, cartId) {
         const product = await Product.findById(productId);
         if (!product) throw new Error('El producto no existe');

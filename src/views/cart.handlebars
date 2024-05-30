@@ -8,6 +8,11 @@
                 <p>{{this.product.description}}</p>
                 <p>Price: ${{this.product.price}}</p>
                 <p>Quantity: {{this.quantity}}</p>
+                <button class="delete-product-btn"
+                        data-product-id="{{this.product._id}}"
+                        data-cart-id="{{../cartId}}">
+                    Eliminar
+                </button>
             </div>
         </div>
     {{/each}}

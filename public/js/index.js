@@ -59,6 +59,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.delete-product-btn').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const productId = event.target.getAttribute('data-product-id');
+            const cartId = event.target.getAttribute('data-cart-id');
+
+            if (!cartId) {
+                console.error('No hay carrito asociado a este usuario');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/carts/${cartId}/product/${productId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al eliminar el producto del carrito');
+                }
+
+                const result = await response.json();
+                console.log('Producto eliminado del carrito:', result);
+                alert('Producto eliminado del carrito');
+                
+                
+                location.reload(); 
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al eliminar el producto del carrito');
+            }
+        });
+    });
+});
+
+
+
+
+
+
 
 
 
