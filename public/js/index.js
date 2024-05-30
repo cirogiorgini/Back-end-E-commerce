@@ -1,8 +1,11 @@
+
+
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.btn-card').forEach(button => {
         button.addEventListener('click', async (event) => {
             const productId = event.target.getAttribute('data-product-id');
             const cartId = event.target.getAttribute('data-cart-id');
+
 
             if (!cartId) {
                 console.error('No hay carrito asociado a este usuario');
@@ -49,8 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('Error al generar el ticket');
             }
 
-            const result = await response.json();
-            console.log('Ticket generado:', result.ticket);
+            const result = await response.json(); 
+            
+            
+            console.log('Ticket generado:', result);
             alert('Ticket generado correctamente');
         } catch (error) {
             console.error('Error:', error);
@@ -58,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.delete-product-btn').forEach(button => {

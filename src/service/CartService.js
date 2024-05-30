@@ -2,6 +2,7 @@ const CartDAO = require('../dao/CartDAO');
 const Product = require('../models/product.model');
 const Cart = require('../models/cart.model');
 const TicketService = require('../service/ticket.service');
+const ProductService = require('../service/ProductService');
 
 class CartService {
     async getCarts() {
@@ -37,8 +38,29 @@ class CartService {
         return CartDAO.getCartById(cartId);
     }
 
-    async deleteProductFromCart(productId, cartId) {
-        return CartDAO.deleteProductFromCart(productId, cartId);
+    async deleteProductFromCart(cartId, productId, userId) {
+        try {
+           
+            const cart = await CartDAO.getCartById(cartId);
+    
+            if (!cart) {
+                throw new Error('Cart not found');
+            }
+    
+            const product = cart.products.find(item => item.product.equals(productId));
+    
+            if (!product) {
+                throw new Error('Product not found in cart');
+            }
+    
+            
+            const deletedProduct = await CartDAO.deleteProductFromCart(cartId, productId);
+    
+            
+            return deletedProduct;
+        } catch (error) {
+            throw new Error(`Error deleting product from cart: ${error.message}`);
+        }
     }
 
     async updateCart(cartId, products) {

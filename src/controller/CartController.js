@@ -1,5 +1,5 @@
 const CartService = require('../service/CartService');
-
+const TicketDTO = require('../DTO/ticketDTO');
 
 class CartController {
     async getCarts(req, res) {
@@ -95,9 +95,13 @@ class CartController {
         const cartId = req.params.cid;
     
         try {
+
             const ticket = await CartService.purchaseCart(cartId, userId);
+            const formattedTicket = TicketDTO.formatTicketResponse(ticket);
+
+            console.log('Ticket generado:', formattedTicket)
     
-            res.status(200).json({ ticket });
+            res.status(200).json({ ticket: formattedTicket });
         } catch (error) {
             console.error('Error al comprar el carrito:', error);
             res.status(500).json({ error: 'Error al comprar el carrito' });
