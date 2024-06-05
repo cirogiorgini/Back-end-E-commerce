@@ -26,6 +26,12 @@ const initializeStrategy = () => {
                 password: ''
             }
             const result = await User.create(newUser)
+
+            if (!user.cart) {
+                const newCart = await Cart.create({});
+                user.cart = newCart._id;
+                await user.save();
+            }
             done(null, result)
         }
         catch (err) {

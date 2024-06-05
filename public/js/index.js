@@ -1,4 +1,16 @@
+const Toast = Swal.mixin({
+    toast: true,
+    position: "bottom-end",
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
 
+  
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.btn-card').forEach(button => {
@@ -26,7 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const result = await response.json();
                 console.log('Producto agregado al carrito:', result);
-                alert('Producto agregado al carrito');
+                Toast.fire({
+                    icon: "success",
+                    title: "Producto agregado al carrito"
+                  });
             } catch (error) {
                 console.error('Error:', error);
                 alert('Error al agregar el producto al carrito');
@@ -90,7 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const result = await response.json();
                 console.log('Producto eliminado del carrito:', result);
-                alert('Producto eliminado del carrito');
+                Toast.fire({
+                    icon: "success",
+                    title: "Producto eliminado del carrito"
+                  });
                 
                 
                 location.reload(); 

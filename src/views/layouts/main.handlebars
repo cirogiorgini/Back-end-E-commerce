@@ -8,7 +8,6 @@
     {{#each styles}}
      <link rel="stylesheet" href="/css/{{this}}">
     {{/each}} 
-  
    
 </head>
 <body>
@@ -31,9 +30,9 @@
     {{#if useWS}}
         <script src="/socket.io/socket.io.js"></script>
     {{/if}}
-    
-   
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     {{#each scripts}}
         <script src="/js/{{this}}"></script>
     {{/each}}
