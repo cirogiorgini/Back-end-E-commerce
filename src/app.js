@@ -8,6 +8,7 @@ const sessionMiddleware = require('./session/mongoStorage');
 const passport = require('passport');
 const mongoose = require('mongoose'); 
 const viewsRouter = require('./routes/home.router');
+const mockingRouter = require('./routes/mocks.router');
 const productsRouter = require('./routes/products.router');
 const ProductController = require('./controller/ProductController');
 const UserController = require('./controller/UserController');
@@ -52,6 +53,7 @@ app.use(passport.session());
 
 // RutaR
 app.use('/', viewsRouter);
+app.use('/', mockingRouter);
 app.use('/api', productsRouter);
 app.use('', sessionRouter);
 app.use('/api', cartRouter);

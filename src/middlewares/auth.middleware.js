@@ -12,6 +12,7 @@ const isUser = (req, res, next) => {
     }
 
     return res.status(403).json({ error: 'Acceso no autorizado' });
+    
 };
 
 module.exports = {
