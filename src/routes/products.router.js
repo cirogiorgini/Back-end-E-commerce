@@ -13,7 +13,7 @@ const router = Router()
 //     }
 // });
 router.get('/products/:id', ProductController.getProductById);
-router.post('/', ProductController.addProduct);
+router.post('/products', ProductController.addProduct);
 router.put('/:id', ProductController.updateProduct);
 router.delete('/:id', ProductController.deleteProduct);
 

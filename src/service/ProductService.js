@@ -1,4 +1,7 @@
 const ProductDAO = require('../dao/ProductDAO');
+const CustomError = require('./errors/CustomError');
+const ErrorCodes = require('./errors/errorCodes');
+const { generateInvalidProductDataError } = require('./errors')
 
 class ProductService {
     async getProducts({ limit = 10, page = 1, sort, query } = {}) {
@@ -33,13 +36,18 @@ class ProductService {
 
     async addProduct(title, description, price, thumbnail, code, status, stock, category) {
         if (!title || !description || !code || !category || isNaN(+price) || +price <= 0 || isNaN(+stock) || +stock < 0) {
-            throw new Error('Error al validar los datos');
+            throw CustomError.customError({
+                name: 'datos invalidos',
+                message: 'Error al crear el producto, datos invalidos',
+                cause : generateInvalidProductDataError({ title, description, price, thumbnail, code, status, stock, category }),
+                code: ErrorCodes.INVALID_TYPES_ERROR
+            });
         }
 
         const finalThumbnail = thumbnail ? thumbnail : 'Sin Imagen';
         const finalStatus = typeof status === 'undefined' || status === true || status === 'true';
 
-        await ProductDAO.create({
+        await ProductDAO.Create({
             title,
             description,
             price,

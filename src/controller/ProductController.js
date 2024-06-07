@@ -21,16 +21,14 @@ class ProductController {
         }
     }
 
-    async addProduct(req, res) {
-        try {
-            const { title, description, price, thumbnail, code, status, stock, category } = req.body;
-            await ProductService.addProduct(title, description, price, thumbnail, code, status, stock, category);
-            res.status(201).json({ message: 'Producto agregado correctamente' });
-        } catch (error) {
-            console.error('Error al agregar el producto:', error);
-            res.status(500).json({ message: 'Error al agregar el producto' });
-        }
-    }
+    async addProduct (req, res, next) {
+       try {
+        const { title, description, price, thumbnail, code, status, stock, category } = req.body;
+        await ProductService.addProduct(title, description, price, thumbnail, code, status, stock, category);
+        res.status(201).json({ message: 'Product added successfully' });
+    } catch (error) {
+        next(error);  
+    }}
 
     async updateProduct(req, res) {
         try {

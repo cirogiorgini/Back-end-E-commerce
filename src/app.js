@@ -16,6 +16,7 @@ const UserService = require('./service/UserService');
 const cartRouter = require('./routes/cart.router');
 const sessionRouter = require('./routes/session.router');
 const { dbName, mongoUrl } = require('./dbConfig')
+const { errorHandler } = require('./service/errors/errorHandler');
 const initializeStrategy = require('./config/passport.config');
 const githublogin = require('./config/passport.github');
 require('dotenv').config();
@@ -41,6 +42,7 @@ app.use(bodyParser.json());
 app.use(express.static(`${__dirname}/../public`));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); 
+app.use(errorHandler);
 
 // Session middleware
 app.use(sessionMiddleware);
