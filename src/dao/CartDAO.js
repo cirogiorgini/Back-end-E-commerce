@@ -1,6 +1,7 @@
 const { Carts, Products } = require('../models');
 const Cart = require('../models/cart.model'); 
 const Product = require('../models/product.model'); 
+const logger = require('../utils/logger')
 
 class CartDAO {
     async getCarts() {
@@ -58,6 +59,7 @@ class CartDAO {
         }
 
         await cart.save();
+        logger.info('Producto agregado correctamente', { product });
         return cart;
     }
 

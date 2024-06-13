@@ -3,6 +3,7 @@ const { Strategy } = require('passport-local');
 const User = require('../models/user.model');
 const Cart = require('../models/cart.model');  
 const { isValidPassword, hashPassword } = require('../utils/hasing');
+const logger = require('../utils/logger');
 
 const initializeStrategy = () => {
     passport.use('register', new Strategy({
@@ -54,27 +55,34 @@ const initializeStrategy = () => {
         usernameField: 'email'
     }, async (username, password, done) => {
         try {
+            logger.debug('Iniciando proceso de autenticación para el usuario:', username);
+    
             const user = await User.findOne({ email: username });
             if (!user) {
-                console.log('User not found!');
+                logger.warning('Usuario no encontrado:', username);
                 return done(null, false);
             }
-
+    
             if (!isValidPassword(password, user.password)) {
+                logger.warning('Contraseña inválida para el usuario:', username);
                 return done(null, false);
             }
-
+    
             if (!user.cart) {
                 const newCart = await Cart.create({});
                 user.cart = newCart._id;
                 await user.save();
+                logger.info('Nuevo carrito creado y asignado al usuario:', username);
             }
-
+    
+            logger.info('Autenticación exitosa para el usuario:', username);
             return done(null, user);
         } catch (err) {
+            logger.error('Error en el proceso de autenticación:', err);
             done(err);
         }
     }));
+    
 };
 
 module.exports = initializeStrategy;

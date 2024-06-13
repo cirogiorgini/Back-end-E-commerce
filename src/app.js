@@ -13,6 +13,7 @@ const productsRouter = require('./routes/products.router');
 const ProductController = require('./controller/ProductController');
 const UserController = require('./controller/UserController');
 const UserService = require('./service/UserService');
+const loggerTestRoutes = require('./routes/logger.router');
 const cartRouter = require('./routes/cart.router');
 const sessionRouter = require('./routes/session.router');
 const { dbName, mongoUrl } = require('./dbConfig')
@@ -57,6 +58,7 @@ app.use(passport.session());
 app.use('/', viewsRouter);
 app.use('/', mockingRouter);
 app.use('/api', productsRouter);
+app.use('/api', loggerTestRoutes);
 app.use('', sessionRouter);
 app.use('/api', cartRouter);
 
