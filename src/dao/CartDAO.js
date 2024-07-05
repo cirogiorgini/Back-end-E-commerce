@@ -37,6 +37,8 @@ class CartDAO {
             const product = cart.products[productIndex];
             cart.products.splice(productIndex, 1);
             await cart.save();
+
+            logger.info('Producto eliminado correctamente', { product });
     
             return product;
         } catch (error) {

@@ -20,6 +20,7 @@ const { dbName, mongoUrl } = require('./dbConfig')
 const { errorHandler } = require('./service/errors/errorHandler');
 const initializeStrategy = require('./config/passport.config');
 const githublogin = require('./config/passport.github');
+const { swaggerUi, swaggerDocs } = require('./config/swagger');
 require('dotenv').config();
 
 const app = express();
@@ -36,6 +37,7 @@ app.set('view engine', 'handlebars');
 app.set('ProductController', ProductController);
 app.set('UserController', UserController);
 app.set('UserService', UserService);
+
 
 // Middlewares
 app.use(express.json());
@@ -56,11 +58,14 @@ app.use(passport.session());
 
 // RutaR
 app.use('/', viewsRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use('/', mockingRouter);
 app.use('/api', productsRouter);
 app.use('/api', loggerTestRoutes);
 app.use('', sessionRouter);
 app.use('/api', cartRouter);
+
+
 
 // Conectar a la base de datos y preparar gestores
 const main = async () => {

@@ -1,4 +1,5 @@
 const Ticket = require('../models/ticket.model');
+const logger = require('../utils/logger')
 
 async function createTicket(cart, purchaser) {
     const amount = cart.products.reduce((total, item) => {
@@ -12,6 +13,8 @@ async function createTicket(cart, purchaser) {
         amount,
         purchaser,
     });
+
+    logger.info('')
 
     return ticket;
 }
