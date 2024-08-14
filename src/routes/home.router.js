@@ -2,7 +2,7 @@ const { Router } = require('express')
 const CartController = require('../controller/CartController');
 const UserService = require('../service/UserService');
 const ProductService = require('../service/ProductService');
-const { isAdmin } = require('../middlewares/rol.middleware');
+const { isAdmin, isNotAUser } = require('../middlewares/rol.middleware');
 const ProductController = require('../controller/ProductController');
 
 const router = Router()
@@ -174,7 +174,7 @@ router.get('/api/products/productsDashboard', isAdmin, async (req, res) =>{
     }
 })
 
-router.get('/createProduct', (req, res) => {
+router.get('/createProduct', isNotAUser ,(req, res) => {
     res.render('createProduct', {
         title: 'Crear producto',
         styles: ['index.css'],

@@ -3,13 +3,14 @@ const transport = require('../utils/transport');
 const UserDAO = require('../dao/UserDAO');
 const UserService = require('../service/UserService');
 const UserController = require('../controller/UserController')
+const { isAdmin } = require('../middlewares/rol.middleware')
 
 const router = Router()
 
 
 router.get('/users', UserController.getAllUsers);
 
-router.post('/users/:id/toggleRol', async (req, res) => {
+router.post('/users/:id/toggleRol', isAdmin ,async (req, res) => {
     try {
         const userId = req.params.id;
         const user = await UserDAO.findUserById(userId);
@@ -28,7 +29,7 @@ router.post('/users/:id/toggleRol', async (req, res) => {
     }
 });
 
-router.delete('/users/deleteInactive', async (req, res) => {
+router.delete('/users/deleteInactive', isAdmin ,async (req, res) => {
     try {
         const twoDaysAgo = new Date();
         twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
@@ -69,7 +70,7 @@ router.delete('/users/deleteInactive', async (req, res) => {
     }
 });
 
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/:id', isAdmin ,async (req, res) => {
     try {
         const userId = req.params.id;
         const userDeleted = await UserService.deleteUserById(userId);
