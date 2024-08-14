@@ -120,6 +120,132 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+function toggleRole(userId, currentRole) {
+    fetch(`/api/users/${userId}/toggleRol`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ currentRole })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert('Rol cambiado exitosamente');
+            location.reload(); 
+        } else {
+            alert('Error al cambiar el rol');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+document.getElementById('createProductForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const productData = {
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        price: document.getElementById('price').value,
+        thumbnail: document.getElementById('thumbnail').value,
+        code: document.getElementById('code').value,
+        status: document.getElementById('status').checked,
+        stock: document.getElementById('stock').value,
+        category: document.getElementById('category').value
+    };
+
+    try {
+        const response = await fetch('/api/products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(productData)
+        });
+
+        if (response.ok) {
+            alert('Producto creado correctamente');
+        } else {
+            const errorData = await response.json();
+            alert(`Error: ${errorData.message}`);
+        }
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
+});
+
+function deleteProduct(productId) {
+    if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+        fetch(`/api/products/${productId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Producto eliminado con éxito');
+                location.reload(); 
+            } else {
+                alert('Error al eliminar el producto');
+            }
+        })
+        .catch(error => {
+            console.error('Error al eliminar el producto:', error);
+            alert('Error al eliminar el producto');
+        });
+    }
+}
+
+async function deleteUser(userId) {
+    if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+        try {
+            const response = await fetch(`/api/users/${userId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert('Usuario eliminado exitosamente');
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                alert('Error al eliminar el usuario: ' + errorData.message);
+            }
+        } catch (error) {
+            console.error('Error al realizar la solicitud:', error);
+            alert('Error al intentar eliminar el usuario');
+        }
+    }
+}
+
+async function deleteInactiveUsers(adminId) {
+    try {
+        const response = await fetch('/api/users/deleteInactive', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ adminId })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert('Usuarios inactivos eliminados');
+            location.reload();
+        } else {
+            alert('Error al eliminar usuarios: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error en la solicitud:', error);
+        alert('Error al enviar la solicitud');
+    }
+}
+
 
 
 

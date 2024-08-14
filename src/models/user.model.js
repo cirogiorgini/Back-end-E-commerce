@@ -13,9 +13,17 @@ const schema = new mongoose.Schema({
         type: String,
         default: 'usuario'
     },
+    Last_conecction:{
+        type: Date,
+        default: Date.now
+    },
     cart: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Carts'
+    },
+    documents: {
+        name: String,
+        reference: String
     }
 })
 

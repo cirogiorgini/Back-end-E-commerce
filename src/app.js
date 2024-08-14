@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const sessionMiddleware = require('./session/mongoStorage');
 const passport = require('passport');
 const mongoose = require('mongoose'); 
+const Handlebars = require('handlebars');
 const viewsRouter = require('./routes/home.router');
 const mockingRouter = require('./routes/mocks.router');
 const productsRouter = require('./routes/products.router');
@@ -15,6 +16,7 @@ const UserController = require('./controller/UserController');
 const UserService = require('./service/UserService');
 const loggerTestRoutes = require('./routes/logger.router');
 const cartRouter = require('./routes/cart.router');
+const userRouter = require('./routes/user.router')
 const sessionRouter = require('./routes/session.router');
 const { dbName, mongoUrl } = require('./dbConfig')
 const { errorHandler } = require('./service/errors/errorHandler');
@@ -30,6 +32,9 @@ const httpServer = createServer(app);
 const io = new Server(httpServer); 
 
 // Configurar handlebars
+Handlebars.registerHelper('eq', function(a, b) {
+    return a === b;
+});
 app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
@@ -60,9 +65,10 @@ app.use(passport.session());
 app.use('/', viewsRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use('/', mockingRouter);
+app.use('/api', userRouter);
 app.use('/api', productsRouter);
 app.use('/api', loggerTestRoutes);
-app.use('', sessionRouter);
+app.use('/api', sessionRouter);
 app.use('/api', cartRouter);
 
 

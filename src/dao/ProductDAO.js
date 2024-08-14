@@ -1,8 +1,12 @@
 const Products = require('../models/product.model');
 
 class ProductDAO {
-    async paginate(filter, options) {
-        return Products.paginate(filter, options);
+    async find(filter = {}) {
+        try {
+            return await Products.find(filter).lean().exec();
+        } catch (error) {
+            throw new Error('Error fetching products from the database');
+        }
     }
 
     async findById(id) {

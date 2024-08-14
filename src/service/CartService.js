@@ -13,18 +13,34 @@ class CartService {
         return await CartDAO.addCart();
     }
 
-    async addProductToCart(productId, cartId) {
+    async addProductToCart(productId, cartId, req) {
         try {
+            if (!req || !req.session || !req.session.user) {
+                throw new Error('La sesión del usuario no está disponible');
+            }
+
+            console.log('Sesión del usuario:', req.session.user);
+    
+            const userEmail = req.session.user.email;
+
+            if (req.session.user.rol === 'admin'){
+                throw new Error('no puedes agregar items al carrito siendo administrador') 
+            }
+    
             const product = await Product.findById(productId);
             if (!product) {
                 throw new Error('El producto no existe');
             }
-
+    
+            if (product.owner === userEmail) {
+                throw new Error('No puedes agregar un producto de tu propio propietario al carrito');
+            }
+    
             const cart = await Cart.findById(cartId);
             if (!cart) {
                 throw new Error('El carrito no existe');
             }
-
+    
             const updatedCart = await CartDAO.addProductToCart(productId, cartId);
             return updatedCart;
         } catch (error) {
@@ -117,10 +133,8 @@ class CartService {
             throw new Error('Carrito no encontrado');
         }
     
-        // Verificar el stock y crear el ticket
         const ticket = await TicketService.createTicket(cart, userId);
     
-        // Reducir el stock de los productos en el carrito
         await Promise.all(cart.products.map(async (item) => {
             const product = item.product;
             const quantity = item.quantity;

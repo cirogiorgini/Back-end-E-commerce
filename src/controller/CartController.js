@@ -25,7 +25,7 @@ class CartController {
     async addProductToCart(req, res) {
         try {
             const { pid, cid } = req.params;
-            const cart = await CartService.addProductToCart(pid, cid);
+            const cart = await CartService.addProductToCart(pid, cid, req);
             res.status(200).json(cart);
         } catch (error) {
             console.error('Error al agregar el producto al carrito:', error);

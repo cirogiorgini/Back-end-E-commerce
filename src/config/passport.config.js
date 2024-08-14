@@ -59,12 +59,12 @@ const initializeStrategy = () => {
     
             const user = await User.findOne({ email: username });
             if (!user) {
-                logger.warning('Usuario no encontrado:', username);
+                logger.warn('Usuario no encontrado:', username);
                 return done(null, false);
             }
     
             if (!isValidPassword(password, user.password)) {
-                logger.warning('Contraseña inválida para el usuario:', username);
+                logger.warn('Contraseña inválida para el usuario:', username);
                 return done(null, false);
             }
     

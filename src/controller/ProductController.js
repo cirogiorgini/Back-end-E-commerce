@@ -3,8 +3,8 @@ const ProductService = require('../service/ProductService');
 class ProductController {
     async getProducts(req, res) {
         try {
-            const products = await ProductService.getProducts(req.query);
-            return products
+            const products = await ProductService.getAllProducts(req.query);
+            res.status(200).json(products);
         } catch (error) {
             console.error('Error al obtener los productos:', error);
             throw error;
@@ -21,14 +21,18 @@ class ProductController {
         }
     }
 
-    async addProduct (req, res, next) {
-       try {
-        const { title, description, price, thumbnail, code, status, stock, category } = req.body;
-        await ProductService.addProduct(title, description, price, thumbnail, code, status, stock, category);
-        res.status(201).json({ message: 'Product added successfully' });
-    } catch (error) {
-        next(error);  
-    }}
+    async addProduct(req, res, next) {
+        try {
+            const { title, description, price, thumbnail, code, status, stock, category } = req.body;
+            const owner = req.user.rol === 'admin' ? 'admin' : req.user.email;
+    
+            await ProductService.addProduct(title, description, price, thumbnail, code, status, stock, category, owner);
+            res.status(201).json({ message: 'Producto agregado correctamente' });
+        } catch (error) {
+            next(error);  
+        }
+    }
+    
 
     async updateProduct(req, res) {
         try {
@@ -46,6 +50,7 @@ class ProductController {
         try {
             const { id } = req.params;
             await ProductService.deleteProduct(id);
+            console.log("producto eliminado")
             res.json({ message: 'Producto eliminado correctamente' });
         } catch (error) {
             console.error('Error al eliminar el producto:', error);

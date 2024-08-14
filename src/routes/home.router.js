@@ -1,5 +1,9 @@
 const { Router } = require('express')
 const CartController = require('../controller/CartController');
+const UserService = require('../service/UserService');
+const ProductService = require('../service/ProductService');
+const { isAdmin } = require('../middlewares/rol.middleware');
+const ProductController = require('../controller/ProductController');
 
 const router = Router()
 
@@ -50,8 +54,8 @@ router.get('/profile', async (req, res) => {
         const userId = req.session.user ? req.session.user.id : null;
         console.log('ID del usuario de la sesión:', userId);
 
-        const UserController  = req.app.get('UserService');
-        const user = isLoggedIn ? await UserController.getUserById(userId) : null;
+        const UserService  = req.app.get('UserService');
+        const user = isLoggedIn ? await UserService.getUserById(userId) : null;
 
         res.render('profile', {
             styles: ['index.css'],
@@ -78,14 +82,11 @@ router.get('/profile', async (req, res) => {
 
 router.get('/home', async (req, res) => {
     try {
-        const ProductController = req.app.get("ProductController");
-        const UserController = req.app.get("UserService");
-
-        const products = await ProductController.getProducts(req.query);
+        const products = await ProductService.getAllProducts();
         const isLoggedIn = ![null, undefined].includes(req.session.user);
         const userId = req.session.user ? req.session.user.id : null;
 
-        const user = isLoggedIn ? await UserController.getUserById(userId) : null;
+        const user = isLoggedIn ? await UserService.getUserById(userId) : null;
         const cartId = user ? user.cart : null;
 
         res.render('home', {
@@ -124,6 +125,61 @@ router.get('/cart/:cid', async (req, res) => {
         console.error(error.message);
         res.status(500).json({ error: "Internal Server Error" });
     }
+});
+
+
+router.get('/api/users/adminDashboard', isAdmin, async (req, res) =>{
+    try {
+        const users = await UserService.getAllUsers(req.body);
+
+        const usersList = users.map(user => ({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            age: user.age,
+            rol: user.rol
+        }));
+
+
+        res.render ('userDashboard',{
+            title: 'UserDashboard',
+            usersList,
+            scripts: ['index.js'],
+            styles: ['index.css']
+        })
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+})
+
+router.get('/api/products/productsDashboard', isAdmin, async (req, res) =>{
+    try {
+        const products = await ProductService.getAllProducts();
+
+
+
+        res.render ('productsDashboard',{
+            title: 'ProductsDashboard',
+            products,
+            scripts: ['index.js'],
+            styles: ['index.css']
+        })
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+})
+
+router.get('/createProduct', (req, res) => {
+    res.render('createProduct', {
+        title: 'Crear producto',
+        styles: ['index.css'],
+        scripts: ['index.js']
+    });
 });
 
 

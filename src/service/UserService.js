@@ -1,4 +1,5 @@
 const UserDAO = require('../dao/UserDAO');
+const transport = require('../utils/transport')
 
 class UserService {
     constructor() {
@@ -68,6 +69,43 @@ class UserService {
         }
 
         return await UserDAO.findUserById(id);
+    }
+
+    async getAllUsers() {
+        try {
+            return await UserDAO.getAllUsers();
+        } catch (error) {
+            throw new error (`Error al obtener los usuarios: ${error.message}`)
+        }
+    }
+
+    async deleteUserById(userId) {
+        try {
+            const user = await UserDAO.findUserById(userId);
+            if (!user) {
+                throw new Error('Usuario no encontrado');
+            }
+
+            await transport.sendMail({
+                from: 'tucorreo@gmail.com',
+                to: user.email,
+                subject: 'Notificación de eliminación de cuenta',
+                html: `
+                <div>
+                    <p>Hola ${user.firstName},</p>
+                    <p>Tu cuenta ha sido eliminada por un administrador.</p>
+                    <p>Si crees que esto es un error o necesitas más información, por favor, contáctanos.</p>
+                    <p>Saludos,</p>
+                    <p>El equipo de tu aplicación</p>
+                </div>
+                `,
+            });
+    
+            return await UserDAO.deleteUserById(userId);
+        } catch (error) {
+            console.error('Error al eliminar el usuario o enviar el correo:', error);
+            throw error;
+        }
     }
 
     isAdmin(user) {

@@ -1,20 +1,13 @@
 const { Router } = require('express')
 const ProductController = require('../controller/ProductController');
+const { isNotAUser, isAdmin } = require('../middlewares/rol.middleware');
 
 const router = Router()
 
-// router.get('/api/products', async (req, res) => {
-//     try {
-//         const products = await ProductController.getProducts(req.query);
-//         res.json(products);
-//     } catch (error) {
-//         console.error('Error al obtener los productos:', error);
-//         res.status(500).json({ message: 'Error al obtener los productos' });
-//     }
-// });
+router.get('/products', ProductController.getProducts);
 router.get('/products/:id', ProductController.getProductById);
-router.post('/products', ProductController.addProduct);
-router.put('/:id', ProductController.updateProduct);
-router.delete('/:id', ProductController.deleteProduct);
+router.post('/products', isNotAUser, ProductController.addProduct);
+router.put('/products/:id', ProductController.updateProduct);
+router.delete('/products/:id', isAdmin , ProductController.deleteProduct);
 
 module.exports = router
